@@ -1,2 +1,1 @@
-# b3n.fun
-✋🏽 Creative &amp; informative projects ✨
+https://b3n.fun/
