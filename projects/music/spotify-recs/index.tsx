@@ -66,6 +66,9 @@ function configReducer(state: Config, action: ConfigAction): Config {
 
 let audioInstance: HTMLAudioElement
 
+const PlayPauseIcon = ({ isStop, ...props }) =>
+  isStop ? <FaStopCircle {...props} /> : <FaPlayCircle {...props} />
+
 export default function SpotifyRecs() {
   const [spotifyToken, setSpotifyToken] = useState(null)
   const [processing, setProcessing] = useState(false)
@@ -88,9 +91,10 @@ export default function SpotifyRecs() {
   }, [])
 
   useEffect(() => {
+    if (!audioInstance) audioInstance = new Audio()
     if (audioInstance) audioInstance.pause()
     if (currentPreview) {
-      audioInstance = new Audio(currentPreview)
+      audioInstance.setAttribute('src', currentPreview)
       audioInstance.play()
     }
   }, [currentPreview])
@@ -201,20 +205,6 @@ export default function SpotifyRecs() {
         {results && (
           <div className="w-full flex flex-col gap-8 items-center">
             <Heading>🎧 The Results are In! 🎹</Heading>
-            {currentPreview && (
-              <button
-                type="button"
-                className="z-50 sticky top-4"
-                onClick={(e) => {
-                  setPreview(null)
-                }}
-              >
-                <FaStopCircle
-                  size={48}
-                  className="mx-3 text-music-spotify fill-current bg-white rounded-full"
-                />
-              </button>
-            )}
             <div className="w-full max-w-lg flex flex-col">
               {results.map((track, i) => (
                 <div
@@ -235,18 +225,28 @@ export default function SpotifyRecs() {
                       {track.artists.map((a) => a.name).join(', ')}
                     </div>
                   </a>
-                  <button
-                    type="button"
-                    className="z-50"
-                    onClick={(e) => {
-                      setPreview(track.preview_url)
-                    }}
-                  >
-                    <FaPlayCircle
-                      size={28}
-                      className="mx-3 text-music-spotify fill-current opacity-0 group-hover:opacity-100 transition-all"
-                    />
-                  </button>
+                  {track.preview_url && (
+                    <button
+                      type="button"
+                      className="z-50"
+                      onClick={(e) => {
+                        setPreview(
+                          currentPreview === track.preview_url
+                            ? null
+                            : track.preview_url
+                        )
+                      }}
+                    >
+                      <PlayPauseIcon
+                        isStop={currentPreview === track.preview_url}
+                        size={28}
+                        className={clsx(
+                          'mx-3 text-music-spotify fill-current group-hover:opacity-100 transition-all',
+                          currentPreview !== track.preview_url && 'opacity-0'
+                        )}
+                      />
+                    </button>
+                  )}
                 </div>
               ))}
             </div>
