@@ -20,17 +20,27 @@ const BasicLayout: React.FC<{
         <span className="mx-2 text-xl">|</span>
         <span className="font-bold">{title}</span>
       </nav>
-      <main className="px-4 md:px-16 min-h-[90vh]">{children}</main>
+      <main className="px-4 md:px-16 max-w-6xl mx-auto min-h-[90vh]">
+        {children}
+      </main>
       <nav className="w-full border-t-1 border-gray-200 bg-gray-100 py-4 px-4 text-gray-600 text-center">
         <span>
-          Made by{' '}
+          made by{' '}
           <Link colored external href="https://benjaminashbaugh.me">
             benjamin ashbaugh
           </Link>
         </span>
         {` • `}
         <span>
-          <Link colored href='/'>more</Link>
+          <Link colored external href={'mailto:hi' + '@' + 'b3n.fun'}>
+            contact
+          </Link>
+        </span>
+        {` • `}
+        <span>
+          <Link colored href="/">
+            more
+          </Link>
         </span>
       </nav>
     </div>

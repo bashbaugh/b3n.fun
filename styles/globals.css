@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer utilities {
+  .story {
+    @apply flex flex-col items-center text-center;
+  }
+
   .story > p {
     @apply text-lg;
   }

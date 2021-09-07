@@ -1,9 +1,9 @@
 import clsx from 'clsx'
 import BasicLayout from 'components/BasicLayout'
-import Heading from 'components/Heading'
 import Image from 'components/Image'
 
 import tonImage from '../assets/thetonbomb.jpeg'
+import swimmingPool from '../assets/olympic_swimming_pool.jpeg'
 
 // https://www.climateneutralgroup.com/en/news/what-exactly-is-1-tonne-of-co2/
 
@@ -28,16 +28,14 @@ const DotGrid = ({ num, className = null }) => {
 
 export default function HowMuchCO2() {
   return (
-    <BasicLayout title="Scale of Global CO2 Emissions" series="Climate">
-      <div className="story w-full flex flex-col items-center py-16 gap-16">
+    <BasicLayout title="Scale of Global CO2 Emissions" series="Earth">
+      <div className="story w-full py-16 gap-16">
         {/* <Heading>How Much?</Heading> */}
         {/* TODO note about ton vs tonne */}
         <p>This is one ton of CO2 (slightly less than a metric tonne).</p>
-        <div className="flex gap-4">
-          <Image src={tonImage} alt="A ton of CO2" />
-        </div>
+        <Image src={tonImage} alt="A ton of CO2" />
         {/* Provide examples of a tonne */}
-        <p>We&apos;ll represent that tonne with one blue dot.</p>
+        <p>We&apos;ll represent a tonne of CO2 with one blue dot.</p>
         <DotGrid num={1} className="bg-blue-600 w-4 h-4" />
         <p>
           Every year, the US generates approximately 16 tonnes of CO2 per capita
@@ -68,17 +66,48 @@ export default function HowMuchCO2() {
           <p>of man-made CO2 released per year (2018) by the US alone.</p>
         </div>
         <p>
-          China generates over twice that much... 10.31 billion tons in 2018
+          China generates over twice that much... 10.31 billion tonnes in 2018
         </p>
         <p>
           <strong>
-            Globally, we generated 35.2 billion tons of greenhouse gases in
-            2018.
+            Globally, we generated 35.2 billion tonnes of CO2 in 2018.
           </strong>
+          <div className="text-sm text-center">
+            Keep in mind that CO2 is <i>far</i> from being the only greenhouse
+            gas.
+          </div>
         </p>
-        <hr className="text-gray-300 w-3/4" />
-        aa
-        {/* trees can capture this much, but we are cutting down trees */}
+        <div className="text-center text-base">
+          <p>At 15&deg;c, that much CO2 would fill</p>
+          <div className="!text-[3rem] font-bold text-red-500 my-3">
+            7,529,984,000
+          </div>
+          <p>olympic swimming pools</p>
+        </div>
+        <Image
+          src={swimmingPool}
+          alt="Olympic swimming pool"
+          attribution="Buda Mendes / Getty Images"
+        />
+        <p>
+          <i>
+            That&apos;s enough water to blanket the entire US with over a foot
+          </i>
+          .
+        </p>
+        <hr className="border-gray-500 w-3/4" />
+        <p>
+          Studies have shown that natural CO2 sinks - like trees - absorb
+          roughly the same amount of CO2 as that which is naturally generated
+          each year.
+        </p>
+        <p>
+          That doesn&apos;t mean they can absorb an extra 7.5 billion swimming
+          pools full of it each year, as evidenced by the average global
+          temperature, which has sharply increased over the past several
+          decades.
+        </p>
+        <div className="w-full">chart</div>
       </div>
     </BasicLayout>
   )
@@ -86,5 +115,9 @@ export default function HowMuchCO2() {
 
 // Sources
 // https://www.pnas.org/content/117/32/19122
+// https://www.epa.gov/ghgemissions/global-greenhouse-gas-emissions-data
 // https://www.climatewatchdata.org/ghg-emissions (CAIT)
 // https://www.sciencedirect.com/science/article/pii/S1674927818300376
+
+// https://www.theworldcounts.com/challenges/climate-change/global-warming/global-co2-emissions/story
+// https://www.climateneutralgroup.com/en/news/what-exactly-is-1-tonne-of-co2/

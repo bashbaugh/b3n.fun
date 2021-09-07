@@ -7,6 +7,9 @@ module.exports = {
       colors: {
         site: {
           primary: '#FA953C'
+        },
+        music: {
+          spotify: '#1DB954'
         }
       },
       borderWidth: {

@@ -5,9 +5,20 @@ const Image: React.FC<{
   src: string | StaticImageData
   alt: string
   className?: string
-}> = ({ src, alt, className }) => (
-  <div className={clsx('w-[500px] overflow-hidden rounded-md', className)}>
-    <NImage src={src} alt={alt} layout="responsive" />
+  attribution?: string
+}> = ({ src, alt, className, attribution }) => (
+  // Why do we need this flex???
+  <div className="flex">
+    <div className="max-w-xl w-full">
+      <NImage
+        src={src}
+        alt={alt}
+        layout="intrinsic"
+        className={clsx('rounded-md', className)}
+        title={attribution}
+      />
+      {/* <span className='text-xs text-gray-400'>{attribution}</span> */}
+    </div>
   </div>
 )
 
