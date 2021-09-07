@@ -58,7 +58,7 @@ const Series: React.FC<{
               key={p.name}
               name={p.name}
               image={p.image}
-              href={`/${id}/${p.slug}`}
+              href={`/${p.slug}`}
             />
           ))}
         </div>
@@ -85,13 +85,18 @@ const Home: NextPage = () => {
           </a>
         </p>
         <Series
-          name="Climate"
+          name="Climate & Earth"
           id="earth"
           projects={[
             {
               name: 'CO2 Emissions',
               image: 'co2_emission.jpeg',
               slug: 'co2-emissions',
+            },
+            {
+              name: 'Deforestation',
+              image: 'deforestation.jpeg',
+              slug: 'deforestation',
             },
           ]}
           className="border-yellow-600 text-yellow-600"
