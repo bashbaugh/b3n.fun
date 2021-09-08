@@ -106,7 +106,7 @@ const Home: NextPage = () => {
           id="fun"
           projects={[
             {
-              name: 'Spotify Recommendation Machine',
+              name: 'Music Recommendation Machine',
               image: 'headphones.jpeg',
               slug: 'spotify-recommendations',
             },

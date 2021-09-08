@@ -4,8 +4,19 @@ import BasicLayout from 'components/BasicLayout'
 import Heading from 'components/Heading'
 import { useEffect, useReducer, useState } from 'react'
 import BigLoader from '../BigLoader'
-import { FaPlayCircle, FaStopCircle } from 'react-icons/fa'
+import { FaPlayCircle, FaStopCircle, FaArrowLeft, FaRedo } from 'react-icons/fa'
 import NImage from 'next/image'
+import {
+  GetHandleProps,
+  GetRailProps,
+  GetTrackProps,
+  Handles,
+  Rail,
+  Slider,
+  SliderItem,
+  Tracks,
+} from 'react-compound-slider'
+import { selectRandom } from 'util/array'
 
 import spotifyImage from '../assets/spotify.png'
 
@@ -19,6 +30,7 @@ const spotifyApi = axios.create({
 
 const Input: React.FC<{
   placeholder: string
+  defaultValue?: string
   onChange: (val: string) => void
 }> = ({ onChange, ...inputProps }) => (
   <input
@@ -30,14 +42,13 @@ const Input: React.FC<{
 )
 
 const Button: React.FC<{
-  children: string
   big?: boolean
   onClick?: () => void
 }> = ({ onClick, children, big }) => (
   <button
     onClick={onClick}
     className={clsx(
-      'rounded-full px-3 py-2 bg-music-spotify text-white font-bold',
+      'flex items-center rounded-full px-3 py-2 bg-music-spotify text-white font-bold',
       big && 'text-xl px-5 py-3 hover:animate-vibrate'
     )}
   >
@@ -45,15 +56,235 @@ const Button: React.FC<{
   </button>
 )
 
-interface Config {
-  seedSongs: string[]
+const railOuterStyle = {
+  position: 'absolute' as 'absolute',
+  width: '100%',
+  height: 42,
+  transform: 'translate(0%, -50%)',
+  borderRadius: 7,
+  cursor: 'pointer',
 }
 
-type ConfigAction = {
-  type: 'setSong'
-  i: number
-  song: string
+const railInnerStyle = {
+  position: 'absolute' as 'absolute',
+  width: '100%',
+  height: 14,
+  transform: 'translate(0%, -50%)',
+  borderRadius: 7,
+  pointerEvents: 'none' as 'none',
+  backgroundColor: 'rgb(155,155,155)',
 }
+
+interface TrackProps {
+  source: SliderItem
+  target: SliderItem
+  getTrackProps: GetTrackProps
+  disabled?: boolean
+}
+
+export const Track: React.FC<TrackProps> = ({
+  source,
+  target,
+  getTrackProps,
+  disabled = false,
+}) => {
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        transform: 'translate(0%, -50%)',
+        height: 14,
+        zIndex: 1,
+        backgroundColor: disabled ? '#999' : '#607E9E',
+        borderRadius: 7,
+        cursor: 'pointer',
+        left: `${source.percent}%`,
+        width: `${target.percent - source.percent}%`,
+      }}
+      {...getTrackProps()}
+    />
+  )
+}
+
+interface HandleProps {
+  domain: number[]
+  handle: SliderItem
+  getHandleProps: GetHandleProps
+  disabled?: boolean
+}
+
+const Handle: React.FC<HandleProps> = ({
+  domain: [min, max],
+  handle: { id, value, percent },
+  disabled = false,
+  getHandleProps,
+}) => {
+  return (
+    <>
+      <div
+        style={{
+          left: `${percent}%`,
+          position: 'absolute',
+          transform: 'translate(-50%, -50%)',
+          WebkitTapHighlightColor: 'rgba(0,0,0,0)',
+          zIndex: 5,
+          width: 28,
+          height: 42,
+          cursor: 'pointer',
+          backgroundColor: 'none',
+        }}
+        {...getHandleProps(id)}
+      />
+      <div
+        role="slider"
+        aria-valuemin={min}
+        aria-valuemax={max}
+        aria-valuenow={value}
+        style={{
+          left: `${percent}%`,
+          position: 'absolute',
+          transform: 'translate(-50%, -50%)',
+          zIndex: 2,
+          width: 24,
+          height: 24,
+          borderRadius: '50%',
+          boxShadow: '1px 1px 1px 1px rgba(0, 0, 0, 0.3)',
+          backgroundColor: disabled ? '#666' : '#9BBFD4',
+        }}
+      />
+    </>
+  )
+}
+
+interface SliderRailProps {
+  getRailProps: GetRailProps
+}
+
+export const SliderRail: React.FC<SliderRailProps> = ({ getRailProps }) => {
+  return (
+    <>
+      <div style={railOuterStyle} {...getRailProps()} />
+      <div style={railInnerStyle} />
+    </>
+  )
+}
+
+const ControlGroup: React.FC<{
+  text: string
+  description: string
+  active: boolean
+  onCheck: (checked: boolean) => void
+  value: number
+  onChange: (val: number) => void
+}> = ({ text, active, value, onCheck, onChange, description }) => (
+  <div className="flex flex-col gap-2 w-80">
+    <label
+      className={clsx(
+        'flex items-center gap-2 font-bold text-gray-500',
+        active ? 'text-gray-700' : 'text-gray-500'
+      )}
+    >
+      <input
+        type="checkbox"
+        className="w-6 h-6"
+        defaultChecked={active}
+        onChange={(e) => onCheck(e.target.checked)}
+      />
+      {text}
+    </label>
+    {active && (
+      <div>
+        <p>{description}</p>
+        <div className="relative my-4" style={{ height: 120, width: '100%' }}>
+          <Slider
+            mode={1}
+            step={0.05}
+            domain={[0, 1]}
+            // rootStyle={{
+            //   position: 'relative',
+            //   width: '100%',
+            //   touchAction: 'none',
+            // }}
+            onChange={(vals) => onChange(vals[0])}
+            values={[value]}
+          >
+            <Rail>
+              {({ getRailProps }) => <SliderRail getRailProps={getRailProps} />}
+            </Rail>
+            <Handles>
+              {({ handles, getHandleProps }) => (
+                <div className="slider-handles">
+                  {handles.map((handle) => (
+                    <Handle
+                      key={handle.id}
+                      handle={handle}
+                      domain={[0, 1]}
+                      getHandleProps={getHandleProps}
+                    />
+                  ))}
+                </div>
+              )}
+            </Handles>
+            <Tracks right={false}>
+              {({ tracks, getTrackProps }) => (
+                <div className="slider-tracks">
+                  {tracks.map(({ id, source, target }) => (
+                    <Track
+                      key={id}
+                      source={source}
+                      target={target}
+                      getTrackProps={getTrackProps}
+                    />
+                  ))}
+                </div>
+              )}
+            </Tracks>
+          </Slider>
+        </div>
+      </div>
+    )}
+  </div>
+)
+
+// TODO integers
+const controls = [
+  'acousticness',
+  'danceability',
+  'energy',
+  'instrumentalness',
+  'liveness',
+  'loudness',
+  'speechiness',
+  'valence',
+] as const
+type Control = typeof controls[number]
+
+type Config = {
+  seedSongs: string[]
+} & Record<
+  Control,
+  {
+    enabled: boolean
+    target: number
+  }
+>
+
+type ConfigAction =
+  | {
+      type: 'setSong'
+      i: number
+      song: string
+    }
+  | {
+      type: 'enableControl'
+      control: Control
+      enable: boolean
+    }
+  | {
+      type: 'setControlValues'
+      control: Control
+      target: number
+    }
 
 function configReducer(state: Config, action: ConfigAction): Config {
   switch (action.type) {
@@ -61,7 +292,16 @@ function configReducer(state: Config, action: ConfigAction): Config {
       const seedSongs = state.seedSongs
       seedSongs[action.i] = action.song
       return { ...state, seedSongs }
+    case 'enableControl':
+      return {
+        ...state,
+        [action.control]: { ...state[action.control], enabled: action.enable },
+      }
+    case 'setControlValues':
+      const { type, control, ...values } = action
+      return { ...state, [control]: { ...state[control], ...values } }
   }
+  return state
 }
 
 let audioInstance: HTMLAudioElement
@@ -74,9 +314,16 @@ export default function SpotifyRecs() {
   const [processing, setProcessing] = useState(false)
   const [results, setResults] = useState<any>()
   const [currentPreview, setPreview] = useState<string>()
-  const [config, dispatch] = useReducer(configReducer, {
+
+  const initialConfig = {
     seedSongs: [],
-  })
+  }
+  for (const c of controls)
+    initialConfig[c] = {
+      enabled: false,
+      target: 0.5,
+    }
+  const [config, dispatch] = useReducer(configReducer, initialConfig as any)
 
   if (spotifyToken)
     spotifyApi.defaults.headers['Authorization'] = 'Bearer ' + spotifyToken
@@ -92,10 +339,13 @@ export default function SpotifyRecs() {
 
   useEffect(() => {
     if (!audioInstance) audioInstance = new Audio()
-    if (audioInstance) audioInstance.pause()
     if (currentPreview) {
       audioInstance.setAttribute('src', currentPreview)
       audioInstance.play()
+    }
+
+    return () => {
+      audioInstance.pause()
     }
   }, [currentPreview])
 
@@ -110,34 +360,38 @@ export default function SpotifyRecs() {
       seedSongIds.push(data.tracks.items[0].id)
     }
 
+    const targetsConfigQuery = controls.reduce((query, c) => {
+      return config[c].enabled ? query + `&target_${c}=${config[c].target}` : query
+    }, '')
+
     const { data } = await spotifyApi.get(
       `/recommendations?limit=20&seed_artists=&seed_genres=&seed_tracks=${seedSongIds.join(
         ','
-      )}`
+      )}` + targetsConfigQuery
     )
     setProcessing(false)
     setResults(data.tracks)
+    window.scrollTo(0, 0)
   }
 
   return (
-    <BasicLayout title="Spotify Recommendations">
+    <BasicLayout title="Music Recommendations">
       <div className="w-full py-16">
         {!processing && !results && (
           <>
             <div className="flex flex-col items-center gap-4">
-              <Heading>🎵🎤 Spotify Recommendation Machine 🥁🎸</Heading>
+              <Heading>🎵🎤 Music Recommendation Machine 🥁🎸</Heading>
               <p className="font-bold text-gray-600">
-                Get recommendations based on other songs you like and specified
-                characteristics like tempo, &quot;danceability&quot;, etc.
+                Get spotify recommendations based on other songs or artists you
+                like and specified characteristics like tempo, energy, and more.
               </p>
             </div>
 
             {!spotifyToken && (
               <div className="max-w-lg text-center mx-auto my-8 flex flex-col items-center gap-4">
                 <p>
-                  To generate recommendations, you&apos;ll first need to
-                  authorize me to use your spotify account to fetch song data on
-                  your behalf.
+                  To generate recommendations, you&apos;ll first need to sign
+                  into your spotify account.
                 </p>
                 <a
                   href={`https://accounts.spotify.com/authorize?response_type=token&client_id=${spotifyClientId}&redirect_uri=${encodeURIComponent(
@@ -155,38 +409,123 @@ export default function SpotifyRecs() {
                     Enter up to 5 <b>songs</b> you like
                   </p>
                   <Input
+                    defaultValue={config.seedSongs[0]}
                     placeholder="song 1"
                     onChange={(song) =>
                       dispatch({ type: 'setSong', i: 0, song })
                     }
                   />
                   <Input
+                    defaultValue={config.seedSongs[1]}
                     placeholder="song 2"
                     onChange={(song) =>
                       dispatch({ type: 'setSong', i: 1, song })
                     }
                   />
                   <Input
+                    defaultValue={config.seedSongs[2]}
                     placeholder="song 3"
                     onChange={(song) =>
                       dispatch({ type: 'setSong', i: 2, song })
                     }
                   />
                   <Input
+                    defaultValue={config.seedSongs[3]}
                     placeholder="song 4"
                     onChange={(song) =>
                       dispatch({ type: 'setSong', i: 3, song })
                     }
                   />
                   <Input
+                    defaultValue={config.seedSongs[4]}
                     placeholder="song 5"
                     onChange={(song) =>
                       dispatch({ type: 'setSong', i: 4, song })
                     }
                   />
                 </div>
+                <ControlGroup
+                  text="Choose a target acousticness"
+                  description="This value describes how acoustic recommendations should be"
+                  active={config.acousticness.enabled}
+                  value={config.acousticness.target}
+                  onCheck={(enable) =>
+                    dispatch({
+                      type: 'enableControl',
+                      control: 'acousticness',
+                      enable,
+                    })
+                  }
+                  onChange={(target) => {
+                    dispatch({
+                      type: 'setControlValues',
+                      control: 'acousticness',
+                      target,
+                    })
+                  }}
+                />
+                <ControlGroup
+                  text="Choose a target danceability"
+                  description="This value describes how suitable recommendations should be for dancing, based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity."
+                  active={config.danceability.enabled}
+                  value={config.danceability.target}
+                  onCheck={(enable) =>
+                    dispatch({
+                      type: 'enableControl',
+                      control: 'danceability',
+                      enable,
+                    })
+                  }
+                  onChange={(target) => {
+                    dispatch({
+                      type: 'setControlValues',
+                      control: 'danceability',
+                      target,
+                    })
+                  }}
+                />
+                <ControlGroup
+                  text="Choose a target energy"
+                  description="This value represents a perceptual measure of the intensity and activity of recommended songs."
+                  active={config.energy.enabled}
+                  value={config.energy.target}
+                  onCheck={(enable) =>
+                    dispatch({
+                      type: 'enableControl',
+                      control: 'energy',
+                      enable,
+                    })
+                  }
+                  onChange={(target) => {
+                    dispatch({
+                      type: 'setControlValues',
+                      control: 'energy',
+                      target,
+                    })
+                  }}
+                />
+                <ControlGroup
+                  text="Choose a target instrumentalness"
+                  description="This value describes how instrumental recommendations are."
+                  active={config.instrumentalness.enabled}
+                  value={config.instrumentalness.target}
+                  onCheck={(enable) =>
+                    dispatch({
+                      type: 'enableControl',
+                      control: 'instrumentalness',
+                      enable,
+                    })
+                  }
+                  onChange={(target) => {
+                    dispatch({
+                      type: 'setControlValues',
+                      control: 'instrumentalness',
+                      target,
+                    })
+                  }}
+                />
                 <Button big onClick={getRecs}>
-                  Run the Magic ✨
+                  ✨ Generate Recommendations ✨
                 </Button>
               </div>
             )}
@@ -197,7 +536,11 @@ export default function SpotifyRecs() {
           <div>
             <BigLoader />
             <p className="text-xl text-gray-700 text-center">
-              Analyzing the tunes...
+              {selectRandom([
+                'Analyzing the tunes...',
+                'Finding your next favorite song...',
+                'Playing some music...',
+              ])}
             </p>
           </div>
         )}
@@ -205,6 +548,25 @@ export default function SpotifyRecs() {
         {results && (
           <div className="w-full flex flex-col gap-8 items-center">
             <Heading>🎧 The Results are In! 🎹</Heading>
+            <div className="flex gap-3">
+              <Button
+                onClick={() => {
+                  setResults(null)
+                  setPreview(null)
+                }}
+              >
+                <FaArrowLeft className="mr-1" /> <span>Adjust Settings</span>
+              </Button>
+              <Button
+                onClick={() => {
+                  setResults(null)
+                  setPreview(null)
+                  getRecs()
+                }}
+              >
+                <span>Refresh List</span> <FaRedo className="ml-1" />
+              </Button>
+            </div>
             <div className="w-full max-w-lg flex flex-col">
               {results.map((track, i) => (
                 <div
