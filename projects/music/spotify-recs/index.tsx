@@ -6,19 +6,10 @@ import { useEffect, useReducer, useState } from 'react'
 import BigLoader from '../BigLoader'
 import { FaPlayCircle, FaStopCircle, FaArrowLeft, FaRedo } from 'react-icons/fa'
 import NImage from 'next/image'
-import {
-  GetHandleProps,
-  GetRailProps,
-  GetTrackProps,
-  Handles,
-  Rail,
-  Slider,
-  SliderItem,
-  Tracks,
-} from 'react-compound-slider'
 import { selectRandom } from 'util/array'
 
 import spotifyImage from '../assets/spotify.png'
+import { SliderControl } from './SliderControl'
 
 const spotifyClientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID
 const isProd = process.env.NODE_ENV === 'production'
@@ -28,17 +19,26 @@ const spotifyApi = axios.create({
   baseURL: 'https://api.spotify.com/v1',
 })
 
-const Input: React.FC<{
+const SeedInput: React.FC<{
   placeholder: string
-  defaultValue?: string
+  defaultValue: string
+  defaultType: string
+  onTypeChange: (type: SeedType) => void
   onChange: (val: string) => void
-}> = ({ onChange, ...inputProps }) => (
-  <input
-    type="text"
-    className="w-full rounded-xl outline-none border-2 border-gray-500 p-2 focus:shadow-lg"
-    {...inputProps}
-    onChange={(e) => onChange(e.target.value)}
-  />
+}> = ({ onChange, onTypeChange, defaultType, ...inputProps }) => (
+  <div className="flex gap-2">
+    <select onChange={(e) => onTypeChange(e.target.value as SeedType)}>
+      <option value="song" selected={defaultType === 'song'}>song</option>
+      <option value="artist" selected={defaultType === 'artist'}>artist</option>
+      <option value="genre" selected={defaultType === 'genre'}>genre</option>
+    </select>
+    <input
+      type="text"
+      className="w-full rounded-xl outline-none border-2 border-gray-500 p-2 focus:shadow-lg"
+      {...inputProps}
+      onChange={(e) => onChange(e.target.value)}
+    />
+  </div>
 )
 
 const Button: React.FC<{
@@ -56,196 +56,6 @@ const Button: React.FC<{
   </button>
 )
 
-const railOuterStyle = {
-  position: 'absolute' as 'absolute',
-  width: '100%',
-  height: 42,
-  transform: 'translate(0%, -50%)',
-  borderRadius: 7,
-  cursor: 'pointer',
-}
-
-const railInnerStyle = {
-  position: 'absolute' as 'absolute',
-  width: '100%',
-  height: 14,
-  transform: 'translate(0%, -50%)',
-  borderRadius: 7,
-  pointerEvents: 'none' as 'none',
-  backgroundColor: 'rgb(155,155,155)',
-}
-
-interface TrackProps {
-  source: SliderItem
-  target: SliderItem
-  getTrackProps: GetTrackProps
-  disabled?: boolean
-}
-
-export const Track: React.FC<TrackProps> = ({
-  source,
-  target,
-  getTrackProps,
-  disabled = false,
-}) => {
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        transform: 'translate(0%, -50%)',
-        height: 14,
-        zIndex: 1,
-        backgroundColor: disabled ? '#999' : '#607E9E',
-        borderRadius: 7,
-        cursor: 'pointer',
-        left: `${source.percent}%`,
-        width: `${target.percent - source.percent}%`,
-      }}
-      {...getTrackProps()}
-    />
-  )
-}
-
-interface HandleProps {
-  domain: number[]
-  handle: SliderItem
-  getHandleProps: GetHandleProps
-  disabled?: boolean
-}
-
-const Handle: React.FC<HandleProps> = ({
-  domain: [min, max],
-  handle: { id, value, percent },
-  disabled = false,
-  getHandleProps,
-}) => {
-  return (
-    <>
-      <div
-        style={{
-          left: `${percent}%`,
-          position: 'absolute',
-          transform: 'translate(-50%, -50%)',
-          WebkitTapHighlightColor: 'rgba(0,0,0,0)',
-          zIndex: 5,
-          width: 28,
-          height: 42,
-          cursor: 'pointer',
-          backgroundColor: 'none',
-        }}
-        {...getHandleProps(id)}
-      />
-      <div
-        role="slider"
-        aria-valuemin={min}
-        aria-valuemax={max}
-        aria-valuenow={value}
-        style={{
-          left: `${percent}%`,
-          position: 'absolute',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 2,
-          width: 24,
-          height: 24,
-          borderRadius: '50%',
-          boxShadow: '1px 1px 1px 1px rgba(0, 0, 0, 0.3)',
-          backgroundColor: disabled ? '#666' : '#9BBFD4',
-        }}
-      />
-    </>
-  )
-}
-
-interface SliderRailProps {
-  getRailProps: GetRailProps
-}
-
-export const SliderRail: React.FC<SliderRailProps> = ({ getRailProps }) => {
-  return (
-    <>
-      <div style={railOuterStyle} {...getRailProps()} />
-      <div style={railInnerStyle} />
-    </>
-  )
-}
-
-const ControlGroup: React.FC<{
-  text: string
-  description: string
-  active: boolean
-  onCheck: (checked: boolean) => void
-  value: number
-  onChange: (val: number) => void
-}> = ({ text, active, value, onCheck, onChange, description }) => (
-  <div className="flex flex-col gap-2 w-80">
-    <label
-      className={clsx(
-        'flex items-center gap-2 font-bold text-gray-500',
-        active ? 'text-gray-700' : 'text-gray-500'
-      )}
-    >
-      <input
-        type="checkbox"
-        className="w-6 h-6"
-        defaultChecked={active}
-        onChange={(e) => onCheck(e.target.checked)}
-      />
-      {text}
-    </label>
-    {active && (
-      <div>
-        <p>{description}</p>
-        <div className="relative my-4" style={{ height: 120, width: '100%' }}>
-          <Slider
-            mode={1}
-            step={0.05}
-            domain={[0, 1]}
-            // rootStyle={{
-            //   position: 'relative',
-            //   width: '100%',
-            //   touchAction: 'none',
-            // }}
-            onChange={(vals) => onChange(vals[0])}
-            values={[value]}
-          >
-            <Rail>
-              {({ getRailProps }) => <SliderRail getRailProps={getRailProps} />}
-            </Rail>
-            <Handles>
-              {({ handles, getHandleProps }) => (
-                <div className="slider-handles">
-                  {handles.map((handle) => (
-                    <Handle
-                      key={handle.id}
-                      handle={handle}
-                      domain={[0, 1]}
-                      getHandleProps={getHandleProps}
-                    />
-                  ))}
-                </div>
-              )}
-            </Handles>
-            <Tracks right={false}>
-              {({ tracks, getTrackProps }) => (
-                <div className="slider-tracks">
-                  {tracks.map(({ id, source, target }) => (
-                    <Track
-                      key={id}
-                      source={source}
-                      target={target}
-                      getTrackProps={getTrackProps}
-                    />
-                  ))}
-                </div>
-              )}
-            </Tracks>
-          </Slider>
-        </div>
-      </div>
-    )}
-  </div>
-)
-
 // TODO integers
 const controls = [
   'acousticness',
@@ -258,9 +68,13 @@ const controls = [
   'valence',
 ] as const
 type Control = typeof controls[number]
+type SeedType = 'song' | 'artist' | 'genre'
 
 type Config = {
-  seedSongs: string[]
+  seeds: Array<{
+    type: SeedType
+    query: string
+  }>
 } & Record<
   Control,
   {
@@ -271,9 +85,10 @@ type Config = {
 
 type ConfigAction =
   | {
-      type: 'setSong'
+      type: 'setSeed'
       i: number
-      song: string
+      seedType?: SeedType
+      query?: string
     }
   | {
       type: 'enableControl'
@@ -288,10 +103,14 @@ type ConfigAction =
 
 function configReducer(state: Config, action: ConfigAction): Config {
   switch (action.type) {
-    case 'setSong':
-      const seedSongs = state.seedSongs
-      seedSongs[action.i] = action.song
-      return { ...state, seedSongs }
+    case 'setSeed':
+      const seeds = state.seeds
+      seeds[action.i] = {
+        ...seeds[action.i],
+        type: action.seedType || state.seeds[action.i].type,
+        query: action.query || undefined,
+      }
+      return { ...state, seeds }
     case 'enableControl':
       return {
         ...state,
@@ -316,7 +135,10 @@ export default function SpotifyRecs() {
   const [currentPreview, setPreview] = useState<string>()
 
   const initialConfig = {
-    seedSongs: [],
+    seeds: new Array(5).fill({
+      type: 'song',
+      query: '',
+    }),
   }
   for (const c of controls)
     initialConfig[c] = {
@@ -352,22 +174,32 @@ export default function SpotifyRecs() {
   const getRecs = async () => {
     setProcessing(true)
 
-    let seedSongIds = []
-    for (const song of config.seedSongs) {
-      const { data } = await spotifyApi.get(
-        `/search?q=${encodeURIComponent(song)}&type=track&limit=1`
-      )
-      seedSongIds.push(data.tracks.items[0].id)
+    const seedSongIds = []
+    const seedArtistIds = []
+    for (const seed of config.seeds) {
+      if (seed.query && seed.type !== 'genre') {
+        const { data } = await spotifyApi.get(
+          `/search?q=${encodeURIComponent(seed.query)}&type=${
+            seed.type === 'artist' ? 'artist' : 'track'
+          }&limit=1`
+        )
+        if (seed.type === 'song') seedSongIds.push(data.tracks.items[0].id)
+        if (seed.type === 'artist') seedArtistIds.push(data.artists.items[0].id)
+      } else {
+
+      }
     }
 
     const targetsConfigQuery = controls.reduce((query, c) => {
-      return config[c].enabled ? query + `&target_${c}=${config[c].target}` : query
+      return config[c].enabled
+        ? query + `&target_${c}=${config[c].target}`
+        : query
     }, '')
 
     const { data } = await spotifyApi.get(
-      `/recommendations?limit=20&seed_artists=&seed_genres=&seed_tracks=${seedSongIds.join(
+      `/recommendations?limit=20&seed_artists=${seedArtistIds.join(
         ','
-      )}` + targetsConfigQuery
+      )}&seed_genres=&seed_tracks=${seedSongIds.join(',')}` + targetsConfigQuery
     )
     setProcessing(false)
     setResults(data.tracks)
@@ -406,45 +238,30 @@ export default function SpotifyRecs() {
               <div className="my-12 flex flex-col items-center gap-8">
                 <div className="flex flex-col gap-2 w-96">
                   <p className="font-medium text-center">
-                    Enter up to 5 <b>songs</b> you like
+                    Enter up to 5 <b>songs, artists or genres</b> you like
                   </p>
-                  <Input
-                    defaultValue={config.seedSongs[0]}
-                    placeholder="song 1"
-                    onChange={(song) =>
-                      dispatch({ type: 'setSong', i: 0, song })
-                    }
-                  />
-                  <Input
-                    defaultValue={config.seedSongs[1]}
-                    placeholder="song 2"
-                    onChange={(song) =>
-                      dispatch({ type: 'setSong', i: 1, song })
-                    }
-                  />
-                  <Input
-                    defaultValue={config.seedSongs[2]}
-                    placeholder="song 3"
-                    onChange={(song) =>
-                      dispatch({ type: 'setSong', i: 2, song })
-                    }
-                  />
-                  <Input
-                    defaultValue={config.seedSongs[3]}
-                    placeholder="song 4"
-                    onChange={(song) =>
-                      dispatch({ type: 'setSong', i: 3, song })
-                    }
-                  />
-                  <Input
-                    defaultValue={config.seedSongs[4]}
-                    placeholder="song 5"
-                    onChange={(song) =>
-                      dispatch({ type: 'setSong', i: 4, song })
-                    }
-                  />
+                  {new Array(5).fill(null).map((_, i) => (
+                    <SeedInput
+                      key={i}
+                      defaultValue={config.seeds[i].query}
+                      defaultType={config.seeds[i].type}
+                      placeholder={selectRandom(
+                        {
+                          song: ['TODO SONG EXAMPLES'],
+                          artist: ['TODO ARTIST EXAMPLES'],
+                          genre: ['TODO GENRE EXAMPLES'],
+                        }[config.seeds[i].type]
+                      )}
+                      onTypeChange={(seedType) =>
+                        dispatch({ type: 'setSeed', i, seedType })
+                      }
+                      onChange={(query) =>
+                        dispatch({ type: 'setSeed', i, query })
+                      }
+                    />
+                  ))}
                 </div>
-                <ControlGroup
+                <SliderControl
                   text="Choose a target acousticness"
                   description="This value describes how acoustic recommendations should be"
                   active={config.acousticness.enabled}
@@ -464,7 +281,7 @@ export default function SpotifyRecs() {
                     })
                   }}
                 />
-                <ControlGroup
+                <SliderControl
                   text="Choose a target danceability"
                   description="This value describes how suitable recommendations should be for dancing, based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity."
                   active={config.danceability.enabled}
@@ -484,7 +301,7 @@ export default function SpotifyRecs() {
                     })
                   }}
                 />
-                <ControlGroup
+                <SliderControl
                   text="Choose a target energy"
                   description="This value represents a perceptual measure of the intensity and activity of recommended songs."
                   active={config.energy.enabled}
@@ -504,7 +321,7 @@ export default function SpotifyRecs() {
                     })
                   }}
                 />
-                <ControlGroup
+                <SliderControl
                   text="Choose a target instrumentalness"
                   description="This value describes how instrumental recommendations are."
                   active={config.instrumentalness.enabled}
