@@ -22,24 +22,56 @@ const spotifyApi = axios.create({
 const SeedInput: React.FC<{
   placeholder: string
   defaultValue: string
-  defaultType: string
+  seedType: SeedType
+  genres: string[]
   onTypeChange: (type: SeedType) => void
   onChange: (val: string) => void
-}> = ({ onChange, onTypeChange, defaultType, ...inputProps }) => (
-  <div className="flex gap-2">
-    <select onChange={(e) => onTypeChange(e.target.value as SeedType)}>
-      <option value="song" selected={defaultType === 'song'}>song</option>
-      <option value="artist" selected={defaultType === 'artist'}>artist</option>
-      <option value="genre" selected={defaultType === 'genre'}>genre</option>
-    </select>
-    <input
-      type="text"
-      className="w-full rounded-xl outline-none border-2 border-gray-500 p-2 focus:shadow-lg"
-      {...inputProps}
-      onChange={(e) => onChange(e.target.value)}
-    />
-  </div>
-)
+}> = ({
+  onChange,
+  onTypeChange,
+  seedType,
+  genres,
+  defaultValue,
+  ...inputProps
+}) => {
+  // If the genre field has no valid selection, select the top one so things don't break
+  if (seedType === 'genre' && !genres.includes(defaultValue)) onChange(genres[0])
+  return (
+    <div className="flex gap-2">
+      <select
+        className="text-gray-600"
+        onChange={(e) => onTypeChange(e.target.value as SeedType)}
+        defaultValue={seedType}
+      >
+        <option value="song">song</option>
+        <option value="artist">artist</option>
+        <option value="genre">genre</option>
+      </select>
+      {seedType !== 'genre' && (
+        <input
+          type="text"
+          defaultValue={defaultValue}
+          className="w-full rounded-xl outline-none border-2 border-gray-500 p-2 focus:shadow-lg"
+          {...inputProps}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      )}
+      {seedType === 'genre' && (
+        <select
+          className="w-full rounded-xl outline-none border-2 border-gray-500 p-2 focus:shadow-lg"
+          onChange={(e) => onChange(e.target.value)}
+          defaultValue={defaultValue}
+        >
+          {genres.map((g) => (
+            <option key={g} value={g}>
+              {g}
+            </option>
+          ))}
+        </select>
+      )}
+    </div>
+  )
+}
 
 const Button: React.FC<{
   big?: boolean
@@ -48,7 +80,7 @@ const Button: React.FC<{
   <button
     onClick={onClick}
     className={clsx(
-      'flex items-center rounded-full px-3 py-2 bg-music-spotify text-white font-bold',
+      'group flex items-center rounded-full px-3 py-2 bg-music-spotify text-white font-bold',
       big && 'text-xl px-5 py-3 hover:animate-vibrate'
     )}
   >
@@ -133,6 +165,7 @@ export default function SpotifyRecs() {
   const [processing, setProcessing] = useState(false)
   const [results, setResults] = useState<any>()
   const [currentPreview, setPreview] = useState<string>()
+  const [availableGenres, setAvailableGenres] = useState<string[]>([])
 
   const initialConfig = {
     seeds: new Array(5).fill({
@@ -147,15 +180,19 @@ export default function SpotifyRecs() {
     }
   const [config, dispatch] = useReducer(configReducer, initialConfig as any)
 
-  if (spotifyToken)
-    spotifyApi.defaults.headers['Authorization'] = 'Bearer ' + spotifyToken
-
   useEffect(() => {
-    setSpotifyToken(
-      new URL(window.location.href.replace(/#/g, '?')).searchParams.get(
-        'access_token'
-      )
-    )
+    const token = new URL(
+      window.location.href.replace(/#/g, '?')
+    ).searchParams.get('access_token')
+    setSpotifyToken(token)
+    if (token) {
+      spotifyApi.defaults.headers['Authorization'] = 'Bearer ' + token
+      spotifyApi
+        .get('/recommendations/available-genre-seeds')
+        .then(({ data }) => {
+          setAvailableGenres(data.genres)
+        })
+    }
     if (isProd) history.replaceState(null, null, ' ')
   }, [])
 
@@ -176,6 +213,7 @@ export default function SpotifyRecs() {
 
     const seedSongIds = []
     const seedArtistIds = []
+    const seedGenres = []
     for (const seed of config.seeds) {
       if (seed.query && seed.type !== 'genre') {
         const { data } = await spotifyApi.get(
@@ -185,8 +223,8 @@ export default function SpotifyRecs() {
         )
         if (seed.type === 'song') seedSongIds.push(data.tracks.items[0].id)
         if (seed.type === 'artist') seedArtistIds.push(data.artists.items[0].id)
-      } else {
-
+      } else if (seed.query) {
+        seedGenres.push(seed.query)
       }
     }
 
@@ -199,7 +237,9 @@ export default function SpotifyRecs() {
     const { data } = await spotifyApi.get(
       `/recommendations?limit=20&seed_artists=${seedArtistIds.join(
         ','
-      )}&seed_genres=&seed_tracks=${seedSongIds.join(',')}` + targetsConfigQuery
+      )}&seed_tracks=${seedSongIds.join(',')}&seed_genres=${seedGenres.join(
+        ','
+      )}` + targetsConfigQuery
     )
     setProcessing(false)
     setResults(data.tracks)
@@ -244,12 +284,13 @@ export default function SpotifyRecs() {
                     <SeedInput
                       key={i}
                       defaultValue={config.seeds[i].query}
-                      defaultType={config.seeds[i].type}
+                      seedType={config.seeds[i].type}
+                      genres={availableGenres}
                       placeholder={selectRandom(
                         {
                           song: ['TODO SONG EXAMPLES'],
                           artist: ['TODO ARTIST EXAMPLES'],
-                          genre: ['TODO GENRE EXAMPLES'],
+                          genre: [],
                         }[config.seeds[i].type]
                       )}
                       onTypeChange={(seedType) =>
@@ -372,7 +413,7 @@ export default function SpotifyRecs() {
                   setPreview(null)
                 }}
               >
-                <FaArrowLeft className="mr-1" /> <span>Adjust Settings</span>
+                <FaArrowLeft className="mr-1 group-hover:-translate-x-1 transition-all" /> <span>Adjust Settings</span>
               </Button>
               <Button
                 onClick={() => {
@@ -381,10 +422,11 @@ export default function SpotifyRecs() {
                   getRecs()
                 }}
               >
-                <span>Refresh List</span> <FaRedo className="ml-1" />
+                <span>Refresh List</span> <FaRedo className="ml-1 group-hover:translate-x-1 transition-all" />
               </Button>
             </div>
             <div className="w-full max-w-lg flex flex-col">
+              {!results.length && <p className='text-center text-xl'>no results found 😭</p>}
               {results.map((track, i) => (
                 <div
                   key={track.id}
@@ -404,28 +446,36 @@ export default function SpotifyRecs() {
                       {track.artists.map((a) => a.name).join(', ')}
                     </div>
                   </a>
-                  {track.preview_url && (
-                    <button
-                      type="button"
-                      className="z-50"
-                      onClick={(e) => {
+                  <button
+                    type="button"
+                    className={clsx(
+                      'z-30',
+                      !track.preview_url && 'cursor-not-allowed'
+                    )}
+                    disabled={!track.preview_url}
+                    onClick={(e) => {
+                      if (track.preview_url)
                         setPreview(
                           currentPreview === track.preview_url
                             ? null
                             : track.preview_url
                         )
-                      }}
-                    >
-                      <PlayPauseIcon
-                        isStop={currentPreview === track.preview_url}
-                        size={28}
-                        className={clsx(
-                          'mx-3 text-music-spotify fill-current group-hover:opacity-100 transition-all',
-                          currentPreview !== track.preview_url && 'opacity-0'
-                        )}
-                      />
-                    </button>
-                  )}
+                    }}
+                  >
+                    <PlayPauseIcon
+                      isStop={currentPreview === track.preview_url && track.preview_url}
+                      size={28}
+                      className={clsx(
+                        'mx-3 text-music-spotify fill-current transition-all',
+                        (!track.preview_url ||
+                          currentPreview !== track.preview_url) &&
+                          'opacity-0',
+                        track.preview_url
+                          ? 'group-hover:opacity-100'
+                          : 'group-hover:opacity-30'
+                      )}
+                    />
+                  </button>
                 </div>
               ))}
             </div>
