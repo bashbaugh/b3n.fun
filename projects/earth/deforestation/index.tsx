@@ -7,10 +7,9 @@ import { FaRegArrowAltCircleDown } from 'react-icons/fa'
 import { GiStopwatch } from 'react-icons/gi'
 
 // Sections:
-// Brief history
 // Rate of deforestation
-// Before/after
-// Consequences
+// Before/after (history of deforestation)
+// Consequences & Importance
 
 function StatsGrid() {
   const [startTime] = useState(new Date().getTime())
@@ -42,10 +41,10 @@ function StatsGrid() {
       </div> */}
         <div className="p-4 flex flex-col gap-2 rounded-xl">
           <div className="text-6xl font-bold">
-            {Math.floor((timePassed / 1000) * 29)}
+            {(Math.floor((timePassed / 1000) * 29)).toLocaleString()}
           </div>
           <div className="text-xl">Trees cut down</div>
-          <span className="text-xs text-gray-600">globally</span>
+          <span className="text-xs text-gray-600">globally, since you opened this page</span>
         </div>
         <div className="p-4 flex flex-col gap-2 rounded-xl">
           <div className="text-6xl font-bold">
@@ -56,7 +55,7 @@ function StatsGrid() {
           </div>
         </div>
         <div className="p-4 flex flex-col gap-2">
-          <div className="text-[5rem] font-bold animate-vibrate-slow text-yellow-500 animate-pulse">
+          <div className="text-7xl font-bold animate-vibrate-slow text-yellow-500 animate-pulse">
             46%
           </div>
           <div className="text-xl">Of Earth&apos;s forests destroyed</div>
@@ -78,7 +77,25 @@ function StatsGrid() {
             at our current rate of deforestation
           </span>
         </div>
-        <div></div>
+        <div className="p-4 flex flex-col gap-2 rounded-xl">
+          <div className="text-6xl font-bold text-red-900">
+            {Math.floor(timePassed / 1000 * .93)}
+          </div>
+          <div className="text-xl">
+            Acres of habitats destroyed
+          </div>
+        </div>
+        <div className="p-4 flex flex-col gap-2 rounded-xl">
+          <div className="text-6xl font-bold animate-vibrate-slow text-yellow-700">
+            {(Math.floor((timePassed / 1000) * 29) * 48).toLocaleString()} Lbs
+          </div>
+          <div className="text-xl">
+            Less CO2 absorbed over the next year
+          </div>
+          <span className="text-xs text-gray-600">
+            as a result of trees cut down since you opened this page
+          </span>
+        </div>
       </div>
     </div>
   )
@@ -123,10 +140,9 @@ export default function Deforestation() {
 }
 
 // Sources
-// https://www.pnas.org/content/117/32/19122
-// https://www.epa.gov/ghgemissions/global-greenhouse-gas-emissions-data
-// https://www.climatewatchdata.org/ghg-emissions (CAIT)
-// https://www.sciencedirect.com/science/article/pii/S1674927818300376
-
-// https://www.theworldcounts.com/challenges/climate-change/global-warming/global-co2-emissions/story
-// https://www.climateneutralgroup.com/en/news/what-exactly-is-1-tonne-of-co2/
+// https://blog.tentree.com/fact-check-are-there-really-more-trees-today-than-100-years-ago/
+// https://onetreeplanted.org/pages/tree-facts
+// https://sites.psu.edu/rcl2jacobsciosciaissues/2016/02/19/deforestation/
+// https://wwf.panda.org/discover/our_focus/forests_practice/importance_forests/?
+// https://www.theworldcounts.com/challenges/planet-earth/state-of-the-planet/when-will-the-rainforests-be-gone/story
+// https://www.conservation.org/stories/11-deforestation-facts-you-need-to-know
