@@ -4,9 +4,11 @@ import Link from 'components/Link'
 const BasicLayout: React.FC<{
   title: string
   series?: string
-}> = ({ children, series, title }) => {
+  fullWidth?: boolean
+  className?: string
+}> = ({ children, series, title, fullWidth, className }) => {
   return (
-    <div className="w-full">
+    <div className={clsx("w-full", className)}>
       <nav className="w-full border-b-1 border-gray-200 py-2 px-4 md:px-16 text-gray-600">
         <Link href="/">b3n.fun</Link>
         {series && (
@@ -20,7 +22,12 @@ const BasicLayout: React.FC<{
         <span className="mx-2 text-xl">|</span>
         <span className="font-bold">{title}</span>
       </nav>
-      <main className="px-4 md:px-16 max-w-6xl mx-auto min-h-[90vh]">
+      <main
+        className={clsx(
+          'mx-auto min-h-[90vh]',
+          !fullWidth && 'max-w-6xl px-4 md:px-16'
+        )}
+      >
         {children}
       </main>
       <nav className="w-full border-t-1 border-gray-200 bg-gray-100 py-4 px-4 text-gray-600 text-center">

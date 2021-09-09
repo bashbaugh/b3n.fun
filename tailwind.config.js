@@ -10,6 +10,9 @@ module.exports = {
         },
         music: {
           spotify: '#1DB954'
+        },
+        bg: {
+          brown: '#F5F2ED'
         }
       },
       borderWidth: {

@@ -35,7 +35,8 @@ const SeedInput: React.FC<{
   ...inputProps
 }) => {
   // If the genre field has no valid selection, select the top one so things don't break
-  if (seedType === 'genre' && !genres.includes(defaultValue)) onChange(genres[0])
+  if (seedType === 'genre' && !genres.includes(defaultValue))
+    onChange(genres[0])
   return (
     <div className="flex gap-2">
       <select
@@ -413,7 +414,8 @@ export default function SpotifyRecs() {
                   setPreview(null)
                 }}
               >
-                <FaArrowLeft className="mr-1 group-hover:-translate-x-1 transition-all" /> <span>Adjust Settings</span>
+                <FaArrowLeft className="mr-1 group-hover:-translate-x-1 transition-all" />{' '}
+                <span>Adjust Settings</span>
               </Button>
               <Button
                 onClick={() => {
@@ -422,11 +424,14 @@ export default function SpotifyRecs() {
                   getRecs()
                 }}
               >
-                <span>Refresh List</span> <FaRedo className="ml-1 group-hover:translate-x-1 transition-all" />
+                <span>Refresh List</span>{' '}
+                <FaRedo className="ml-1 group-hover:translate-x-1 transition-all" />
               </Button>
             </div>
             <div className="w-full max-w-lg flex flex-col">
-              {!results.length && <p className='text-center text-xl'>no results found 😭</p>}
+              {!results.length && (
+                <p className="text-center text-xl">no results found 😭</p>
+              )}
               {results.map((track, i) => (
                 <div
                   key={track.id}
@@ -463,7 +468,10 @@ export default function SpotifyRecs() {
                     }}
                   >
                     <PlayPauseIcon
-                      isStop={currentPreview === track.preview_url && track.preview_url}
+                      isStop={
+                        currentPreview === track.preview_url &&
+                        track.preview_url
+                      }
                       size={28}
                       className={clsx(
                         'mx-3 text-music-spotify fill-current transition-all',
