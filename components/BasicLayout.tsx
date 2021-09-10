@@ -5,10 +5,9 @@ const BasicLayout: React.FC<{
   title: string
   series?: string
   fullWidth?: boolean
-  className?: string
-}> = ({ children, series, title, fullWidth, className }) => {
+}> = ({ children, series, title, fullWidth }) => {
   return (
-    <div className={clsx("w-full", className)}>
+    <div>
       <nav className="w-full border-b-1 border-gray-200 py-2 px-4 md:px-16 text-gray-600">
         <Link href="/">b3n.fun</Link>
         {series && (
@@ -39,14 +38,20 @@ const BasicLayout: React.FC<{
         </span>
         {` • `}
         <span>
+          <Link colored href="/">
+            more projects
+          </Link>
+        </span>
+        {` • `}
+        <span>
           <Link colored external href={'mailto:hi' + '@' + 'b3n.fun'}>
             contact
           </Link>
         </span>
         {` • `}
         <span>
-          <Link colored href="/">
-            more
+          <Link colored external href={'https://twitter.com/benjamin_a0'}>
+            twitter
           </Link>
         </span>
       </nav>

@@ -71,7 +71,7 @@ const Home: NextPage = () => {
   return (
     <>
       <div className="inline-block p-4 text-gray-600 text-lg">b3n.fun</div>
-      <div className="w-full p-4 md:p-32 flex flex-col gap-8 items-center">
+      <div className="w-full p-4 md:px-32 md:py-16 flex flex-col gap-8 items-center">
         <p className="text-center text-lg text-gray-500">
           ✌🏼 Interactive stories, visualizations and other creations made with
           💖 by{' '}
@@ -101,6 +101,18 @@ const Home: NextPage = () => {
           ]}
           className="border-yellow-600 text-yellow-600"
         />
+        {/* <Series
+          name="Computers & Technology"
+          id="computers"
+          projects={[
+            {
+              name: 'How do collaborative text editing applications work?',
+              image: 'yarn_network.jpeg',
+              slug: 'co2-emissions',
+            },
+          ]}
+          className="border-green-600 text-green-600"
+        /> */}
         <Series
           name="Fun"
           id="fun"

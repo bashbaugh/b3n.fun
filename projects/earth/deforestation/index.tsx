@@ -41,10 +41,12 @@ function StatsGrid() {
       </div> */}
         <div className="p-4 flex flex-col gap-2 rounded-xl">
           <div className="text-6xl font-bold">
-            {(Math.floor((timePassed / 1000) * 29)).toLocaleString()}
+            {Math.floor((timePassed / 1000) * 29).toLocaleString()}
           </div>
           <div className="text-xl">Trees cut down</div>
-          <span className="text-xs text-gray-600">globally, since you opened this page</span>
+          <span className="text-xs text-gray-600">
+            globally, since you opened this page
+          </span>
         </div>
         <div className="p-4 flex flex-col gap-2 rounded-xl">
           <div className="text-6xl font-bold">
@@ -79,19 +81,15 @@ function StatsGrid() {
         </div>
         <div className="p-4 flex flex-col gap-2 rounded-xl">
           <div className="text-6xl font-bold text-red-900">
-            {Math.floor(timePassed / 1000 * .93)}
+            {Math.floor((timePassed / 1000) * 0.93)}
           </div>
-          <div className="text-xl">
-            Acres of habitats destroyed
-          </div>
+          <div className="text-xl">Acres of habitats destroyed</div>
         </div>
         <div className="p-4 flex flex-col gap-2 rounded-xl">
           <div className="text-6xl font-bold animate-vibrate-slow text-yellow-700">
             {(Math.floor((timePassed / 1000) * 29) * 48).toLocaleString()} Lbs
           </div>
-          <div className="text-xl">
-            Less CO2 absorbed over the next year
-          </div>
+          <div className="text-xl">Less CO2 absorbed over the next year</div>
           <span className="text-xs text-gray-600">
             as a result of trees cut down since you opened this page
           </span>
@@ -103,39 +101,59 @@ function StatsGrid() {
 
 export default function Deforestation() {
   return (
-    <BasicLayout fullWidth title="Deforestation" series="Earth" className='bg-bg-brown'>
-      <div className="story w-full py-16 gap-16">
-        {/* <Heading>Deforestation</Heading> */}
-        <StatsGrid />
-      </div>
-      <hr className='border-gray-400 w-3/4 mx-auto' />
-      <div className="story gap-16 my-16 max-w-4xl mx-auto">
-        <p>
-          <strong>Enormous sections of forest are destroyed each day.</strong>
-        </p>
-        <p>
-          But forests are <i>extremely</i> important for the survival of people,
-          animals, and our planet.
-        </p>
-        <div className="w-full p-8 bg-green-700 text-white rounded-xl">
-          <div className="inline-block mx-auto">
-          <h3 className='text-2xl font-bold mb-6'>Forests:</h3>
-            <ul className="">
-              <li className='flex items-center'>Are home to <span className='rounded-lg p-1 bg-white text-green-700 text-2xl font-bold mx-3'>80%</span> of the world&apos;s terrestrial biodiversity</li>
-            </ul>
-          </div>
+    <div className="w-full bg-bg-brown">
+      <BasicLayout
+        fullWidth
+        title="Deforestation"
+        series="Earth"
+      >
+        <div className="story w-full py-16 gap-16">
+          {/* <Heading>Deforestation</Heading> */}
+          <StatsGrid />
         </div>
-        <div className="w-full p-8 bg-red-700 text-white rounded-xl">
-          <div className="inline-block mx-auto">
-            <h3 className='text-2xl font-bold mb-6'>If We Don&apos;t Protect Them:</h3>
-            <ul className="">
-              <li className='flex items-center'>We&apos;ll lose<span className='rounded-lg p-1 bg-white text-yellow-600 text-xl font-bold mx-3'>~28,000 species</span> forever, in the next&nbsp;<strong>25 years</strong>.</li>
-            </ul>
+        <hr className="border-gray-400 w-3/4 mx-auto" />
+        <div className="story gap-16 my-16 max-w-4xl mx-auto">
+          <p>
+            <strong>Enormous sections of forest are destroyed each day.</strong>
+          </p>
+          <p>
+            But forests are <i>extremely</i> important for the survival of
+            people, animals, and our planet.
+          </p>
+          <div className="w-full p-8 bg-green-700 text-white rounded-xl">
+            <div className="inline-block mx-auto">
+              <h3 className="text-2xl font-bold mb-6">Forests:</h3>
+              <ul className="">
+                <li className="flex items-center">
+                  Are home to{' '}
+                  <span className="rounded-lg p-1 bg-white text-green-700 text-2xl font-bold mx-3">
+                    80%
+                  </span>{' '}
+                  of the world&apos;s terrestrial biodiversity
+                </li>
+              </ul>
+            </div>
           </div>
+          <div className="w-full p-8 bg-red-700 text-white rounded-xl">
+            <div className="inline-block mx-auto">
+              <h3 className="text-2xl font-bold mb-6">
+                If We Don&apos;t Protect Them:
+              </h3>
+              <ul className="">
+                <li className="flex items-center">
+                  We&apos;ll lose
+                  <span className="rounded-lg p-1 bg-white text-yellow-600 text-xl font-bold mx-3">
+                    ~28,000 species
+                  </span>{' '}
+                  forever, in the next&nbsp;<strong>25 years</strong>.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <p></p>
         </div>
-        <p></p>
-      </div>
-    </BasicLayout>
+      </BasicLayout>
+    </div>
   )
 }
 
