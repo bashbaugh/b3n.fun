@@ -40,7 +40,7 @@ const SeedInput: React.FC<{
   return (
     <div className="flex gap-2">
       <select
-        className="text-gray-600"
+        className="text-gray-600 bg-gray-50 rounded-lg outline-none focus:ring-2 ring-music-spotify"
         onChange={(e) => onTypeChange(e.target.value as SeedType)}
         defaultValue={seedType}
       >
@@ -52,7 +52,7 @@ const SeedInput: React.FC<{
         <input
           type="text"
           defaultValue={defaultValue}
-          className="w-full rounded-xl outline-none border-2 border-gray-500 p-2 focus:shadow-lg"
+          className="w-full rounded-lg outline-none border-2 border-gray-500 p-2 focus:shadow-lg"
           {...inputProps}
           onChange={(e) => onChange(e.target.value)}
         />
@@ -102,6 +102,54 @@ const controls = [
 ] as const
 type Control = typeof controls[number]
 type SeedType = 'song' | 'artist' | 'genre'
+
+const controlData: Record<
+  Control,
+  {
+    text: string
+    description: string
+  }
+> = {
+  acousticness: {
+    text: 'Choose a target acousticness',
+    description: 'This value describes how acoustic recommendations should be',
+  },
+  danceability: {
+    text: 'Choose a target danceability',
+    description:
+      'This value describes how suitable recommendations should be for dancing, based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity.',
+  },
+  energy: {
+    text: 'Choose a target energy',
+    description:
+      'This value represents a perceptual measure of the intensity and activity of recommended songs.',
+  },
+  instrumentalness: {
+    text: 'Choose a target instrumentalness',
+    description:
+      'This value describes how instrumental recommendations should be.',
+  },
+  liveness: {
+    text: 'Choose a target liveness',
+    description:
+      'Setting this value higher makes it more likely to generate recommendations for songs recorded with an audience',
+  },
+  loudness: {
+    text: 'Choose a target loudness',
+    description:
+      'This value describes how loud recommendations should seem to listeners',
+  },
+  speechiness: {
+    text: 'Choose a target speechiness',
+    description:
+      'This value describes how speechy recommendations should be. Higher values will result in songs with more singing or speech',
+  },
+  valence: {
+    text: 'Choose a target valence',
+    description:
+      'Setting this value lower will result in songs that are more sad, more depressed, or angry, and setting it higher will result in songs that are more happy, cheerful, or euphoric.',
+  },
+}
 
 type Config = {
   seeds: Array<{
@@ -165,6 +213,9 @@ export default function SpotifyRecs() {
   const [spotifyToken, setSpotifyToken] = useState(null)
   const [processing, setProcessing] = useState(false)
   const [results, setResults] = useState<any>()
+  const [pool, setPoolData] = useState<{
+    finalSize: number
+  }>()
   const [currentPreview, setPreview] = useState<string>()
   const [availableGenres, setAvailableGenres] = useState<string[]>([])
 
@@ -231,19 +282,25 @@ export default function SpotifyRecs() {
 
     const targetsConfigQuery = controls.reduce((query, c) => {
       return config[c].enabled
-        ? query + `&target_${c}=${config[c].target}`
+        ? query + `&target_${c}=${config[c].target.toPrecision(2)}`
         : query
     }, '')
 
     const { data } = await spotifyApi.get(
-      `/recommendations?limit=20&seed_artists=${seedArtistIds.join(
+      `/recommendations?limit=100&seed_artists=${seedArtistIds.join(
         ','
       )}&seed_tracks=${seedSongIds.join(',')}&seed_genres=${seedGenres.join(
         ','
       )}` + targetsConfigQuery
     )
-    setProcessing(false)
     setResults(data.tracks)
+    setPoolData({
+      finalSize: data.seeds.reduce((size, seed) => {
+        return size + seed.afterRelinkingSize
+      }, 0),
+    })
+
+    setProcessing(false)
     window.scrollTo(0, 0)
   }
 
@@ -256,7 +313,8 @@ export default function SpotifyRecs() {
               <Heading>🎵🎤 Music Recommendation Machine 🥁🎸</Heading>
               <p className="font-bold text-gray-600">
                 Get spotify recommendations based on other songs or artists you
-                like and specified characteristics like tempo, energy, and more.
+                like{' '}
+                {/*and specified characteristics like tempo, energy, and more.*/}
               </p>
             </div>
 
@@ -277,9 +335,13 @@ export default function SpotifyRecs() {
             )}
             {spotifyToken && (
               <div className="my-12 flex flex-col items-center gap-8">
-                <div className="flex flex-col gap-2 w-96">
-                  <p className="font-medium text-center">
+                <div className="flex flex-col gap-2 w-[30rem] rounded-xl bg-gray-200 p-4">
+                  <p className="font-medium text-center text-lg">
                     Enter up to 5 <b>songs, artists or genres</b> you like
+                  </p>
+                  <p className="text-xs text-center text-gray-500 mb-2">
+                    You may need to include the artist&apos;s name at the end of
+                    the song if there is a more popular song with the same name.
                   </p>
                   {new Array(5).fill(null).map((_, i) => (
                     <SeedInput
@@ -303,86 +365,31 @@ export default function SpotifyRecs() {
                     />
                   ))}
                 </div>
-                <SliderControl
-                  text="Choose a target acousticness"
-                  description="This value describes how acoustic recommendations should be"
-                  active={config.acousticness.enabled}
-                  value={config.acousticness.target}
-                  onCheck={(enable) =>
-                    dispatch({
-                      type: 'enableControl',
-                      control: 'acousticness',
-                      enable,
-                    })
-                  }
-                  onChange={(target) => {
-                    dispatch({
-                      type: 'setControlValues',
-                      control: 'acousticness',
-                      target,
-                    })
-                  }}
-                />
-                <SliderControl
-                  text="Choose a target danceability"
-                  description="This value describes how suitable recommendations should be for dancing, based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity."
-                  active={config.danceability.enabled}
-                  value={config.danceability.target}
-                  onCheck={(enable) =>
-                    dispatch({
-                      type: 'enableControl',
-                      control: 'danceability',
-                      enable,
-                    })
-                  }
-                  onChange={(target) => {
-                    dispatch({
-                      type: 'setControlValues',
-                      control: 'danceability',
-                      target,
-                    })
-                  }}
-                />
-                <SliderControl
-                  text="Choose a target energy"
-                  description="This value represents a perceptual measure of the intensity and activity of recommended songs."
-                  active={config.energy.enabled}
-                  value={config.energy.target}
-                  onCheck={(enable) =>
-                    dispatch({
-                      type: 'enableControl',
-                      control: 'energy',
-                      enable,
-                    })
-                  }
-                  onChange={(target) => {
-                    dispatch({
-                      type: 'setControlValues',
-                      control: 'energy',
-                      target,
-                    })
-                  }}
-                />
-                <SliderControl
-                  text="Choose a target instrumentalness"
-                  description="This value describes how instrumental recommendations are."
-                  active={config.instrumentalness.enabled}
-                  value={config.instrumentalness.target}
-                  onCheck={(enable) =>
-                    dispatch({
-                      type: 'enableControl',
-                      control: 'instrumentalness',
-                      enable,
-                    })
-                  }
-                  onChange={(target) => {
-                    dispatch({
-                      type: 'setControlValues',
-                      control: 'instrumentalness',
-                      target,
-                    })
-                  }}
-                />
+                <p className="italic text-gray-400">More options coming soon</p>
+                {/* {Object.entries(controlData).map(([name, c]) => (
+                  <SliderControl
+                    key={name}
+                    text={c.text}
+                    description={c.description}
+                    active={config[name].enabled}
+                    value={config[name].target}
+                    onCheck={(enable) =>
+                      dispatch({
+                        type: 'enableControl',
+                        control: name as Control,
+                        enable,
+                      })
+                    }
+                    onChange={(target) => {
+                      dispatch({
+                        type: 'setControlValues',
+                        control: name as Control,
+                        target,
+                      })
+                    }}
+                  />
+                ))} */}
+
                 <Button big onClick={getRecs}>
                   ✨ Generate Recommendations ✨
                 </Button>
@@ -407,6 +414,7 @@ export default function SpotifyRecs() {
         {results && (
           <div className="w-full flex flex-col gap-8 items-center">
             <Heading>🎧 The Results are In! 🎹</Heading>
+            <p className="text-gray-500">Final pool size: {pool?.finalSize}</p>
             <div className="flex gap-3">
               <Button
                 onClick={() => {

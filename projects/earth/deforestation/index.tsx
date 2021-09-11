@@ -1,10 +1,10 @@
 import clsx from 'clsx'
 import BasicLayout from 'components/BasicLayout'
-import Heading from 'components/Heading'
-import Image from 'components/Image'
 import { useEffect, useState } from 'react'
 import { FaRegArrowAltCircleDown } from 'react-icons/fa'
 import { GiStopwatch } from 'react-icons/gi'
+import InView, { useInView } from 'react-intersection-observer'
+import { useSpring } from 'react-spring'
 
 // Sections:
 // Rate of deforestation
@@ -34,7 +34,7 @@ function StatsGrid() {
         </span>{' '}
         seconds.
       </div>
-      <div className="my-12 max-w-6xl grid grid-cols-2 font-mono gap-16">
+      <div className="my-12 max-w-6xl grid md:grid-cols-2 font-mono gap-16">
         {/* <div className="p-4 flex flex-col gap-2 rounded-xl bg-green-100">
         <div className="text-6xl font-bold">{Math.floor(timePassed / 1000 * 60)}</div>
         <div className='text-xl'>Trees planted</div>
@@ -57,7 +57,7 @@ function StatsGrid() {
           </div>
         </div>
         <div className="p-4 flex flex-col gap-2">
-          <div className="text-7xl font-bold animate-vibrate-slow text-yellow-500 animate-pulse">
+          <div className="text-7xl font-bold text-yellow-500 animate-pulse">
             46%
           </div>
           <div className="text-xl">Of Earth&apos;s forests destroyed</div>
@@ -66,13 +66,22 @@ function StatsGrid() {
           </span>
         </div>
         <div className="p-4 flex flex-col gap-2">
+          <div className="text-7xl font-bold text-yellow-500 animate-pulse">
+            53%
+          </div>
+          <div className="text-xl">
+            Of Earth&apos;s forest animal population gone
+          </div>
+          <span className="text-xs text-gray-600">since 1970</span>
+        </div>
+        <div className="p-4 flex flex-col gap-2">
           <div className="mx-auto text-5xl font-bold flex gap-2 mb-4 text-red-500">
             <GiStopwatch />
             {Math.floor(
               ((new Date(2100, 0).getTime() - new Date().getTime()) /
                 (1000 * 60 * 60 * 24 * 365)) *
-                100000000
-            ) / 100000000}
+                10000000
+            ) / 10000000}
           </div>
           <div className="text-xl">Years until there is no rainforest left</div>
           <span className="text-xs text-gray-600">
@@ -83,15 +92,30 @@ function StatsGrid() {
           <div className="text-6xl font-bold text-red-900">
             {Math.floor((timePassed / 1000) * 0.93)}
           </div>
-          <div className="text-xl">Acres of habitats destroyed</div>
+          <div className="text-xl">Acres of animal habitat destroyed</div>
+          <span className="text-xs text-gray-600">
+            due to deforestation since you opened this page
+          </span>
         </div>
         <div className="p-4 flex flex-col gap-2 rounded-xl">
-          <div className="text-6xl font-bold animate-vibrate-slow text-yellow-700">
+          <div className="text-6xl font-bold text-yellow-700">
+            {Math.floor(
+              ((timePassed / 1000) * 15000000000) / 365 / 24 / 60 / 60
+            ).toLocaleString()}{' '}
+            Tonnes
+          </div>
+          <div className="text-xl">Of CO2 released from fallen trees</div>
+          <span className="text-xs text-gray-600">
+            due to deforestation since you opened this page
+          </span>
+        </div>
+        <div className="p-4 flex flex-col gap-2 rounded-xl">
+          <div className="text-6xl font-bold text-yellow-700">
             {(Math.floor((timePassed / 1000) * 29) * 48).toLocaleString()} Lbs
           </div>
           <div className="text-xl">Less CO2 absorbed over the next year</div>
           <span className="text-xs text-gray-600">
-            as a result of trees cut down since you opened this page
+            as a result of trees killed since you opened this page
           </span>
         </div>
       </div>
@@ -102,24 +126,20 @@ function StatsGrid() {
 export default function Deforestation() {
   return (
     <div className="w-full bg-bg-brown">
-      <BasicLayout
-        fullWidth
-        title="Deforestation"
-        series="Earth"
-      >
+      <BasicLayout fullWidth title="Deforestation" series="Earth">
         <div className="story w-full py-16 gap-16">
           {/* <Heading>Deforestation</Heading> */}
           <StatsGrid />
         </div>
         <hr className="border-gray-400 w-3/4 mx-auto" />
         <div className="story gap-16 my-16 max-w-4xl mx-auto">
-          <p>
+          {/* <p>
             <strong>Enormous sections of forest are destroyed each day.</strong>
           </p>
           <p>
             But forests are <i>extremely</i> important for the survival of
             people, animals, and our planet.
-          </p>
+          </p> */}
           <div className="w-full p-8 bg-green-700 text-white rounded-xl">
             <div className="inline-block mx-auto">
               <h3 className="text-2xl font-bold mb-6">Forests:</h3>
