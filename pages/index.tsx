@@ -78,13 +78,16 @@ const Home: NextPage = () => {
           <a
             href="https://benjaminashbaugh.me"
             target="_blank"
-            rel="noopener"
+            rel="noreferrer"
             className="text-indigo-700"
           >
             Benjamin Ashbaugh
           </a>
         </p>
-        <Series
+        <p className="p-5 rounded-lg border text-center text-lg font-bold text-gray-600">
+          ⌚️ Coming soon
+        </p>
+        {/* <Series
           name="Climate & Earth"
           id="earth"
           projects={[
@@ -94,13 +97,18 @@ const Home: NextPage = () => {
               slug: 'co2-emissions',
             },
             {
+              name: 'Fossil Fuel Fraud',
+              image: 'money_burning.jpeg',
+              slug: 'fossil-fuel-fraud',
+            },
+            {
               name: 'Deforestation',
               image: 'deforestation.jpeg',
               slug: 'deforestation',
             },
           ]}
           className="border-yellow-600 text-yellow-600"
-        />
+        /> */}
         {/* <Series
           name="Computers & Technology"
           id="computers"

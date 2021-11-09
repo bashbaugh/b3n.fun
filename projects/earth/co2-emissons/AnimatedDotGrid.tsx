@@ -87,6 +87,10 @@ const AnimatedDotGrid = ({
       while (adding) {
         if (addDot()) adding = false
       }
+
+      return () => {
+        adding = false
+      }
     }
   }, [rendered])
 

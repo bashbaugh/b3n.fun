@@ -10,6 +10,7 @@ import { selectRandom } from 'util/array'
 
 import spotifyImage from '../assets/spotify.png'
 import { SliderControl } from './SliderControl'
+import { useRouter } from 'next/router'
 
 const spotifyClientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID
 const isProd = process.env.NODE_ENV === 'production'
@@ -210,6 +211,7 @@ const PlayPauseIcon = ({ isStop, ...props }) =>
   isStop ? <FaStopCircle {...props} /> : <FaPlayCircle {...props} />
 
 export default function SpotifyRecs() {
+  const router = useRouter()
   const [spotifyToken, setSpotifyToken] = useState(null)
   const [processing, setProcessing] = useState(false)
   const [results, setResults] = useState<any>()
@@ -351,8 +353,8 @@ export default function SpotifyRecs() {
                       genres={availableGenres}
                       placeholder={selectRandom(
                         {
-                          song: ['TODO SONG EXAMPLES'],
-                          artist: ['TODO ARTIST EXAMPLES'],
+                          song: ['Heat Waves'],
+                          artist: ['Tame Impala'],
                           genre: [],
                         }[config.seeds[i].type]
                       )}
