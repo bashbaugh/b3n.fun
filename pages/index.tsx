@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import Meta from 'components/Meta'
 import type { NextPage } from 'next'
 import Link from 'next/link'
 
@@ -43,6 +44,7 @@ const Series: React.FC<{
 }> = ({ name, projects, id, className }) => {
   return (
     <div id={id} className="py-4">
+      <Meta />
       <div
         className={clsx(
           'w-full border-2 p-4 rounded-md overflow-x-auto',
