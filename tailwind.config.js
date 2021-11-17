@@ -34,6 +34,9 @@ module.exports = {
       animation: {
         'vibrate': 'vibrate 0.3s linear infinite both',
         'vibrate-slow': 'vibrate 0.5s linear infinite both'
+      },
+      fontFamily: {
+        'broken-glass': ['"Broken Glass"', 'sans-serif']
       }
     },
   },

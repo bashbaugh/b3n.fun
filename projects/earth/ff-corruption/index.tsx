@@ -1,8 +1,8 @@
 import BasicLayout from 'components/BasicLayout'
 import { useViewportScroll } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
-import CO2ProducersGrid from './CO2ProducersGrid'
-import SmokeEffect from './SmokeEffect'
+import CO2ProducersGrid from './components/CO2ProducersGrid'
+import SmokeEffect from './components/SmokeEffect'
 
 export default function FFCorruption() {
   const { scrollY } = useViewportScroll()
@@ -20,7 +20,7 @@ export default function FFCorruption() {
 
   return (
     <div
-      className="w-full"
+      className="w-full relative"
       style={
         {
           background: `rgba(0, 0, 0, ${percentageAboveFoldScrolled * 1})`,
@@ -30,8 +30,9 @@ export default function FFCorruption() {
     >
       <SmokeEffect />
       <BasicLayout title="Climate Corruption" series="Earth">
-        <div className="story w-full py-16 gap-16 min-h-screen justify-center -mt-10">
+        <div className="story w-full py-16 gap-12 min-h-screen justify-center -mt-10">
           {/* <Heading>Corruption in the Fossil Fuels Industry</Heading> */}
+          <h1 className='text-red-600 text-[4rem] md:text-[7rem] font-broken-glass'>Climate Corruption</h1>
           <p className="font-bold">
             In recent years, fossil fuels have been the source more than 70% of
             US human-caused greenhouse gas emissions

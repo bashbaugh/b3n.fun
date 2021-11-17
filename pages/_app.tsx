@@ -1,8 +1,9 @@
-import '../public/globals.css'
+import '../styles/globals.css'
+import '../styles/fonts.css'
 import type { AppProps } from 'next/app'
 import { Router } from 'next/router'
 import NProgress from 'nprogress'
-import '../public/nprogress.css'
+import '../styles/nprogress.css'
 
 Router.events.on('routeChangeStart', () => NProgress.start())
 Router.events.on('routeChangeComplete', () => NProgress.done())

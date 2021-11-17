@@ -1,4 +1,4 @@
-import CO2ProducerCompanies, { source } from '../assets/ff-companies/all'
+import CO2ProducerCompanies, { source } from '../../assets/ff-companies/all'
 import Image from 'next/image'
 
 const CO2ProducersGrid = ({}) => {

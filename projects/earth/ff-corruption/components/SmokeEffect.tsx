@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import SmokeMachine from '../lib/SmokeMachine'
+import SmokeMachine from '../../lib/SmokeMachine'
 
 const SmokeEffect = () => {
   const smokeCanvas = useRef<HTMLCanvasElement>()
@@ -8,7 +8,7 @@ const SmokeEffect = () => {
     const el = smokeCanvas.current
     const ctx = el.getContext('2d')
 
-    el.width = el.offsetWidth
+    el.width = window.innerWidth
     el.height = el.offsetHeight
 
     const smoke = SmokeMachine(ctx)
@@ -35,12 +35,11 @@ const SmokeEffect = () => {
     }
   }, [])
 
-  return (
-    <canvas
+  return <canvas
       ref={smokeCanvas}
-      className="absolute w-full h-[200%] left-0 top-0 "
+      className="absolute w-full h-[200%] top-11"
     />
-  )
+  
 }
 
 export default SmokeEffect
