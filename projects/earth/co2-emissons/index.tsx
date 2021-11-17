@@ -73,7 +73,7 @@ export default function HowMuchCO2() {
             <p>of CO2 released per year (2018) by the US alone.</p>
           </div>
           <p>
-            China - the top emitter - generates over twice that much... 10.31
+            China - the top emitter - generates over twice that much: 10.31
             billion tonnes in 2018
           </p>
           <p>
@@ -81,16 +81,15 @@ export default function HowMuchCO2() {
               Ang, globally, we generated 35.2 billion tonnes of CO2 in 2018.
             </strong>
             <div className="text-sm text-center">
-              Keep in mind that CO2 is <i>far</i> from being the only greenhouse
-              gas.
+              Keep in mind that CO2 is <i>far</i> from the only greenhouse gas.
             </div>
           </p>
           <div className="text-center text-base">
-            <p>At 15&deg;c, that much CO2 would fill</p>
+            <p>That much CO2 would fill</p>
             <div className="!text-[3rem] font-bold text-red-500 my-3">
               <span className="animate-pulse">7,529,984,000</span>
             </div>
-            <p>olympic swimming pools</p>
+            <p>olympic swimming pools (at 15&deg;c & stp)</p>
           </div>
           <Image
             src={swimmingPool}

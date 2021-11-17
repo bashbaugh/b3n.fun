@@ -337,7 +337,7 @@ export default function SpotifyRecs() {
             )}
             {spotifyToken && (
               <div className="my-12 flex flex-col items-center gap-8">
-                <div className="flex flex-col gap-2 w-[30rem] rounded-xl bg-gray-200 p-4">
+                <div className="flex flex-col gap-2 w-[30rem] rounded-xl bg-gray-100 p-4">
                   <p className="font-medium text-center text-lg">
                     Enter up to 5 <b>songs, artists or genres</b> you like
                   </p>
