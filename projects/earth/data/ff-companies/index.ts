@@ -27,6 +27,7 @@ export const source = {
   link: 'https://climateaccountability.org/carbonmajors_dataset2020.html',
 }
 const CO2ProducerCompanies: Array<{
+  id: string
   rank: number
   ownership: 'state' | 'investor'
   country: string
@@ -34,6 +35,7 @@ const CO2ProducerCompanies: Array<{
   image: StaticImageData
 }> = [
   {
+    id: 'sa',
     rank: 1,
     country: 'Saudi Arabia',
     ownership: 'state',
@@ -41,13 +43,16 @@ const CO2ProducerCompanies: Array<{
     image: saudi,
   },
   {
+    id: 'chevron',
     rank: 2,
     country: 'USA',
     ownership: 'investor',
     name: 'Chevron',
     image: chevron,
+    
   },
   {
+    id: 'exxon',
     rank: 3,
     country: 'USA',
     ownership: 'investor',
@@ -55,6 +60,7 @@ const CO2ProducerCompanies: Array<{
     image: exxon,
   },
   {
+    id: 'gazprom',
     rank: 4,
     country: 'Russia',
     ownership: 'state',
@@ -62,6 +68,7 @@ const CO2ProducerCompanies: Array<{
     image: gazprom,
   },
   {
+    id: 'bp',
     rank: 5,
     country: 'Britain',
     ownership: 'investor',
@@ -69,6 +76,7 @@ const CO2ProducerCompanies: Array<{
     image: bp,
   },
   {
+    id: 'shell',
     rank: 6,
     country: 'Netherlands; UK',
     ownership: 'investor',
@@ -76,6 +84,7 @@ const CO2ProducerCompanies: Array<{
     image: shell,
   },
   {
+    id: 'iran',
     rank: 7,
     country: 'Iran',
     ownership: 'state',
@@ -83,6 +92,7 @@ const CO2ProducerCompanies: Array<{
     image: iranian,
   },
   {
+    id: 'coalindia',
     rank: 8,
     country: 'India',
     ownership: 'state',
@@ -90,6 +100,7 @@ const CO2ProducerCompanies: Array<{
     image: coalIndia,
   },
   {
+    id: 'pemex',
     rank: 9,
     country: 'Mexico',
     ownership: 'state',
@@ -97,6 +108,7 @@ const CO2ProducerCompanies: Array<{
     image: pemex,
   },
   {
+    id: 'conoco',
     rank: 10,
     country: 'USA',
     ownership: 'investor',
@@ -104,6 +116,7 @@ const CO2ProducerCompanies: Array<{
     image: conoco,
   },
   {
+    id: 'peabody',
     rank: 11,
     country: 'USA',
     ownership: 'investor',
@@ -111,6 +124,7 @@ const CO2ProducerCompanies: Array<{
     image: peabody,
   },
   {
+    id: 'petrocn',
     rank: 12,
     country: 'China',
     ownership: 'state',
@@ -118,6 +132,7 @@ const CO2ProducerCompanies: Array<{
     image: petrocn,
   },
   {
+    id: 'pdvsa',
     rank: 13,
     country: 'Venezuela',
     ownership: 'state',
@@ -125,6 +140,7 @@ const CO2ProducerCompanies: Array<{
     image: pdvsa,
   },
   {
+    id: 'total',
     rank: 14,
     country: 'France',
     ownership: 'investor',
@@ -132,6 +148,7 @@ const CO2ProducerCompanies: Array<{
     image: total,
   },
   {
+    id: 'adnoc',
     rank: 15,
     country: 'United Arab Emirates',
     ownership: 'state',
@@ -139,6 +156,7 @@ const CO2ProducerCompanies: Array<{
     image: adnoc,
   },
   {
+    id: 'kuwait',
     rank: 16,
     country: 'Kuwait',
     ownership: 'state',
@@ -151,6 +169,7 @@ const CO2ProducerCompanies: Array<{
   //   image: kuwait
   // },
   {
+    id: 'sonatrach',
     rank: 18,
     country: 'Algeria',
     ownership: 'state',
@@ -158,6 +177,7 @@ const CO2ProducerCompanies: Array<{
     image: sonatrach,
   },
   {
+    id: 'bhp',
     rank: 19,
     country: 'Australia',
     ownership: 'investor',
@@ -165,6 +185,7 @@ const CO2ProducerCompanies: Array<{
     image: bhpb,
   },
   {
+    id: 'consol',
     rank: 20,
     country: 'USA',
     ownership: 'investor',
@@ -172,6 +193,7 @@ const CO2ProducerCompanies: Array<{
     image: consol,
   },
   {
+    id: 'patrobras',
     rank: 21,
     country: 'Brazil',
     ownership: 'state',

@@ -13,11 +13,18 @@ const SmokeEffect = () => {
 
     const smoke = SmokeMachine(ctx)
     smoke.start()
-    setTimeout(() => {
-      smoke.addSmoke(window.innerWidth / 4, window.innerHeight, 25)
-      smoke.addSmoke(window.innerWidth / 2, window.innerHeight, 25)
-      smoke.addSmoke((3 * window.innerWidth) / 4, window.innerHeight, 25)
-    })
+    const initialSmoke = (offset = 0) => {
+      const h = window.innerHeight + 100
+      smoke.addSmoke(window.innerWidth / 4 + offset, h , 25)
+      smoke.addSmoke(window.innerWidth / 2 + offset, h, 25)
+      smoke.addSmoke((3 * window.innerWidth) / 4 + offset, h, 25)
+      smoke.addSmoke(window.innerWidth + offset, h, 50)
+      smoke.addSmoke(0, h, 50)
+    }
+    setTimeout(initialSmoke)
+    setTimeout(() => initialSmoke(200), 500)
+    setTimeout(() => initialSmoke(100), 2000)
+    setTimeout(() => initialSmoke(50), 3000)
 
     let lastTriggeredSmoke: number = Date.now()
 
@@ -37,7 +44,7 @@ const SmokeEffect = () => {
 
   return <canvas
       ref={smokeCanvas}
-      className="absolute w-full h-[200%] top-11"
+      className="absolute w-full h-[95%] top-11"
     />
   
 }
