@@ -1,10 +1,11 @@
 import BasicLayout from 'components/BasicLayout'
 import { useViewportScroll } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
-import CO2ProducersGrid from './components/CO2ProducersGrid'
-import LobbyingGraph from './components/LobbyingGraph'
+import CO2ProducersGrid from './sections/CO2ProducersGrid'
+import LobbyingGraph from './sections/LobbyingGraph'
 import SmokeEffect from './components/SmokeEffect'
-import TheLies from './components/TheLies'
+import TheLies from './sections/TheLies'
+import SectionHeading from './components/SectionHeading'
 
 export default function FFCorruption() {
   const { scrollY } = useViewportScroll()
@@ -45,8 +46,8 @@ export default function FFCorruption() {
           </p>
           <p className="">
             But how do they manage to attract so much investment and political
-            support when all the evidence shows that they won&apos;t be sustainable for
-            much longer?
+            support when all the evidence shows that they won&apos;t be
+            sustainable for much longer?
           </p>
         </div>
         <div className="story w-full py-16 gap-16 min-h-screen justify-center -mt-10">
@@ -54,11 +55,22 @@ export default function FFCorruption() {
           <div>
             <CO2ProducersGrid />
           </div>
-          <div>
-            <LobbyingGraph />
-          </div>
+          <SectionHeading
+            title={'Lies'}
+            subtitle={'How have fossil fuel companies tricked investors?'}
+            className='text-red-600 -rotate-6'
+          />
           <div>
             <TheLies />
+          </div>
+
+          <SectionHeading
+            title={'Money'}
+            subtitle={'How do fossil fuel companies influence politics?'}
+            className='text-green-600 rotate-3'
+          />
+          <div>
+            <LobbyingGraph />
           </div>
         </div>
       </BasicLayout>

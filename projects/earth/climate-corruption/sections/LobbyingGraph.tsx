@@ -126,11 +126,13 @@ function LobbyingGraph({}) {
       id="lobbying-totals"
     >
       <p className="font-bold text-lg">
-        These, and other oil and gas corporations, spend hundreds of millions lobbying congress every year.
+        These, and other oil and gas corporations, spend hundreds of millions
+        lobbying congress every year.
       </p>
-      <div id="lobbying-totals-graph-container" className='my-5' />
+      <div id="lobbying-totals-graph-container" className="my-5" />
       <p className="text-left text-xs">
-        Amounts spent lobbying as disclosed by select companies - released by Senate Office of Public Records January 2021 - source: OpenSecrets
+        Amounts spent lobbying as disclosed by select companies - released by
+        Senate Office of Public Records January 2021 - source: OpenSecrets
       </p>
     </div>
   )

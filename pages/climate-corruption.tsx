@@ -1,3 +1,3 @@
-import FFCorruption from 'projects/earth/ff-corruption'
+import C from 'projects/earth/climate-corruption'
 
-export default FFCorruption
+export default C
