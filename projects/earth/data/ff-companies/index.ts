@@ -1,7 +1,7 @@
 import adnoc from './adnoc.png'
 import bhpb from './bhpbilliton.png'
 import bp from './bp.png'
-import chevron from './chevron.jpeg'
+import chevron from './chevron.png'
 import coalIndia from './coal_india.svg'
 import conoco from './conocophillips.png'
 import exxon from './exxonmobil.png'
@@ -18,6 +18,7 @@ import total from './total.png'
 import shell from './shell.png'
 import peabody from './peabody.svg'
 import consol from './consolenergy.png'
+import cnx from './cnx.png'
 
 // https://climateaccountability.org/carbonmajors_dataset2020.html
 export const source = {
@@ -49,7 +50,6 @@ const CO2ProducerCompanies: Array<{
     ownership: 'investor',
     name: 'Chevron',
     image: chevron,
-    
   },
   {
     id: 'exxon',
@@ -120,7 +120,7 @@ const CO2ProducerCompanies: Array<{
     rank: 11,
     country: 'USA',
     ownership: 'investor',
-    name: 'Peadbody Energy',
+    name: 'Peabody Energy',
     image: peabody,
   },
   {
@@ -190,7 +190,7 @@ const CO2ProducerCompanies: Array<{
     country: 'USA',
     ownership: 'investor',
     name: 'Consol (now CNX)',
-    image: consol,
+    image: cnx,
   },
   {
     id: 'patrobras',

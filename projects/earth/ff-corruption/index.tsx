@@ -2,7 +2,9 @@ import BasicLayout from 'components/BasicLayout'
 import { useViewportScroll } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import CO2ProducersGrid from './components/CO2ProducersGrid'
+import LobbyingGraph from './components/LobbyingGraph'
 import SmokeEffect from './components/SmokeEffect'
+import TheLies from './components/TheLies'
 
 export default function FFCorruption() {
   const { scrollY } = useViewportScroll()
@@ -21,39 +23,42 @@ export default function FFCorruption() {
   return (
     <div
       className="w-full relative"
-      style={
-        {
-          background: `rgba(0, 0, 0, ${percentageAboveFoldScrolled * 1})`,
-          color: `rgba(${aboveFoldScrollCssVal}, ${aboveFoldScrollCssVal}, ${aboveFoldScrollCssVal})`,
-        }
-      }
+      style={{
+        background: `rgba(0, 0, 0, ${percentageAboveFoldScrolled * 1})`,
+        color: `rgba(${aboveFoldScrollCssVal}, ${aboveFoldScrollCssVal}, ${aboveFoldScrollCssVal})`,
+      }}
     >
       <SmokeEffect />
       <BasicLayout title="Climate Corruption" series="Earth">
         <div className="story w-full py-16 gap-12 min-h-screen justify-center -mt-10">
           {/* <Heading>Corruption in the Fossil Fuels Industry</Heading> */}
-          <h1 className='text-red-600 text-[4rem] md:text-[7rem] font-broken-glass'>Climate Corruption</h1>
+          <h1 className="text-red-600 text-[4rem] md:text-[7rem] font-broken-glass">
+            Climate Corruption
+          </h1>
           <p className="font-bold">
             In recent years, fossil fuels have been the source more than 70% of
             US human-caused greenhouse gas emissions
           </p>
           <p>
-            Yet, for clear reasons, the majority of the fossil fuels industry is
-            not willing to shift towards decarbonization.
+            Yet, the majority of the fossil fuels industry is not willing to
+            shift towards decarbonization.
           </p>
-          <p>
+          <p className="">
             But how do they manage to attract so much investment and political
-            support while raising relatively little public pushback?
+            support when all the evidence shows that they won&apos;t be sustainable for
+            much longer?
           </p>
         </div>
         <div className="story w-full py-16 gap-16 min-h-screen justify-center -mt-10">
           {/* <Heading>Corruption in the Fossil Fuels Industry</Heading> */}
           <div>
-            <p className="font-bold text-lg">
-              Over a third of all carbon and methane emissions can be traced
-              back to just ~20 companies.
-            </p>
             <CO2ProducersGrid />
+          </div>
+          <div>
+            <LobbyingGraph />
+          </div>
+          <div>
+            <TheLies />
           </div>
         </div>
       </BasicLayout>

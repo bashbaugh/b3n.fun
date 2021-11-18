@@ -36,7 +36,8 @@ module.exports = {
         'vibrate-slow': 'vibrate 0.5s linear infinite both'
       },
       fontFamily: {
-        'broken-glass': ['"Broken Glass"', 'sans-serif']
+        'broken-glass': ['"Broken Glass"', 'sans-serif'],
+        'before-collapse': ['"Before Collapse"', 'sans-serif']
       }
     },
   },

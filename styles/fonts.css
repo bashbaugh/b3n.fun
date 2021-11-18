@@ -6,3 +6,13 @@
   font-style: normal;
   font-display: swap;
 }
+
+@font-face {
+  font-family: 'Before Collapse';
+  src: url('/font/before-collapse/BeforeCollapse.woff2') format('woff2'),
+      url('/font/before-collapse/BeforeCollapse.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+

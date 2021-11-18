@@ -15,7 +15,7 @@ const SmokeEffect = () => {
     smoke.start()
     const initialSmoke = (offset = 0) => {
       const h = window.innerHeight + 100
-      smoke.addSmoke(window.innerWidth / 4 + offset, h , 25)
+      smoke.addSmoke(window.innerWidth / 4 + offset, h, 25)
       smoke.addSmoke(window.innerWidth / 2 + offset, h, 25)
       smoke.addSmoke((3 * window.innerWidth) / 4 + offset, h, 25)
       smoke.addSmoke(window.innerWidth + offset, h, 50)
@@ -42,11 +42,9 @@ const SmokeEffect = () => {
     }
   }, [])
 
-  return <canvas
-      ref={smokeCanvas}
-      className="absolute w-full h-[95%] top-11"
-    />
-  
+  return (
+    <canvas ref={smokeCanvas} className="absolute w-full h-[190vh] top-11" />
+  )
 }
 
 export default SmokeEffect
