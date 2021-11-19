@@ -58,7 +58,7 @@ export default function FFCorruption() {
           <SectionHeading
             title={'Lies'}
             subtitle={'How have fossil fuel companies tricked investors?'}
-            className='text-red-600 -rotate-6'
+            className="text-red-600 -rotate-6"
           />
           <div>
             <TheLies />
@@ -67,7 +67,7 @@ export default function FFCorruption() {
           <SectionHeading
             title={'Money'}
             subtitle={'How do fossil fuel companies influence politics?'}
-            className='text-green-600 rotate-3'
+            className="text-[#889b73] rotate-3"
           />
           <div>
             <LobbyingGraph />
