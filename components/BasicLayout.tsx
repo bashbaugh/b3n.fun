@@ -31,7 +31,7 @@ const BasicLayout: React.FC<{
       </main>
       <nav className="w-full border-t-1 border-gray-200 bg-gray-100 py-4 px-4 text-gray-600 text-center">
         <span>
-          made by{' '}
+          ❤️ made by{' '}
           <Link colored external href="https://benjaminashbaugh.me">
             benjamin ashbaugh
           </Link>

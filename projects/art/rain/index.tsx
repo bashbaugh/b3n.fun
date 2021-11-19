@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import Paper from 'paper'
 import { randomInt } from 'lib/random'
 import Link from 'next/link'
+import Meta from 'components/Meta'
 
 const tool = new Paper.Tool()
 
@@ -106,6 +107,7 @@ const Rain: React.FC = () => {
 
   return (
     <div className="bg-[#000080] w-full h-screen">
+      <Meta title='Rain' description="Who doesn't love the rain?" />
       {!started && (
         <div
           onClick={() => setStarted(true)}
@@ -115,11 +117,15 @@ const Rain: React.FC = () => {
         </div>
       )}
       {started && <canvas className="w-screen h-screen" ref={ref} />}
-      <Link href='/'><a className='p-3 absolute top-0 left-0 text-white opacity-60 text-lg hover:scale-125 transition-all origin-top-left'>b3n.fun</a></Link>
+      <Link href="/">
+        <a className="p-3 absolute top-0 left-0 text-white opacity-60 text-lg hover:scale-125 transition-all origin-top-left">
+          b3n.fun
+        </a>
+      </Link>
 
-      <div className='p-3 absolute left-0 bottom-0 text-white opacity-50 hover:opacity-80 group text-[0.5rem] hover:scale-[200%] transition-all origin-bottom-left'>
+      <div className="p-3 absolute left-0 bottom-0 text-white opacity-50 hover:opacity-80 group text-[0.5rem] hover:scale-[200%] transition-all origin-bottom-left">
         credits
-        <div className='h-0 group-hover:h-full overflow-hidden'>
+        <div className="h-0 group-hover:h-full overflow-hidden">
           <p>Sounds: zapsplat.com</p>
           <p>Made by Benjamin Ashbaugh</p>
         </div>

@@ -6,6 +6,7 @@ import LobbyingGraph from './sections/LobbyingGraph'
 import SmokeEffect from './components/SmokeEffect'
 import TheLies from './sections/TheLies'
 import SectionHeading from './components/SectionHeading'
+import Meta from 'components/Meta'
 
 export default function FFCorruption() {
   const { scrollY } = useViewportScroll()
@@ -29,6 +30,7 @@ export default function FFCorruption() {
         color: `rgba(${aboveFoldScrollCssVal}, ${aboveFoldScrollCssVal}, ${aboveFoldScrollCssVal})`,
       }}
     >
+      <Meta title='Climate Corruption' description="Exploring how fossil fuel companies have maintained support from investors and politicians and controlled the public narrative about climate change for decades." />
       <SmokeEffect />
       <BasicLayout title="Climate Corruption" series="Earth">
         <div className="story w-full py-16 gap-12 min-h-screen justify-center -mt-10">

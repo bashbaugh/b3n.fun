@@ -4,6 +4,7 @@ import type { AppProps } from 'next/app'
 import { Router } from 'next/router'
 import NProgress from 'nprogress'
 import '../styles/nprogress.css'
+import { useEffect } from 'react'
 
 Router.events.on('routeChangeStart', () => NProgress.start())
 Router.events.on('routeChangeComplete', () => NProgress.done())
