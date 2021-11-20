@@ -43,7 +43,10 @@ const SmokeEffect = () => {
   }, [])
 
   return (
-    <canvas ref={smokeCanvas} className="absolute w-full h-[200vh] top-11" />
+    <canvas
+      ref={smokeCanvas}
+      className="absolute top-0 left-0 w-full h-[200%]"
+    />
   )
 }
 

@@ -29,7 +29,7 @@ const BasicLayout: React.FC<{
       >
         {children}
       </main>
-      <nav className="w-full border-t-1 border-gray-200 bg-gray-100 py-4 px-4 text-gray-600 text-center">
+      <footer className="w-full border-t-1 border-gray-200 bg-gray-100 py-4 px-4 text-gray-600 text-center">
         <span>
           ❤️ made by{' '}
           <Link colored external href="https://benjaminashbaugh.me">
@@ -45,7 +45,7 @@ const BasicLayout: React.FC<{
         {` • `}
         <span>
           <Link colored external href={'mailto:hi' + '@' + 'b3n.fun'}>
-            contact
+            email
           </Link>
         </span>
         {` • `}
@@ -54,7 +54,7 @@ const BasicLayout: React.FC<{
             twitter
           </Link>
         </span>
-      </nav>
+      </footer>
     </div>
   )
 }

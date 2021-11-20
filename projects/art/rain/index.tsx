@@ -107,7 +107,7 @@ const Rain: React.FC = () => {
 
   return (
     <div className="bg-[#000080] w-full h-screen">
-      <Meta title='Rain' description="Who doesn't love the rain?" />
+      <Meta title="Rain" description="Who doesn't love the rain?" />
       {!started && (
         <div
           onClick={() => setStarted(true)}
