@@ -1,4 +1,3 @@
-import TheLies from './sections/TheLies'
 import Layout from './components/Layout'
 import LobbyingGraph from './sections/LobbyingGraph'
 
@@ -7,8 +6,9 @@ export default function Money() {
     <Layout
       title={'The Money'}
       pageTitle={'Money'}
+      pageSubtitle={''}
       activeTab={'money'}
-      navClass="bg-red-700"
+      navClass="bg-[#85bb65]"
     >
       {/* <SmokeEffect /> */}
       <div className="story w-full py-16 gap-16 min-h-screen justify-center -mt-10">

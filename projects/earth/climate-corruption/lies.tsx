@@ -6,6 +6,7 @@ export default function Lies() {
     <Layout
       title={'The Lies'}
       pageTitle={'Deception'}
+      pageSubtitle={''}
       activeTab={'lies'}
       navClass="bg-red-700"
     >
