@@ -5,7 +5,7 @@ const url = 'https://b3n.fun'
 const author = 'Benjamin Ashbaugh'
 
 const Meta: React.FC<{
-  title: string
+  title?: string
   description?: string
   image?: string
 }> = ({
@@ -14,7 +14,7 @@ const Meta: React.FC<{
   image = 'https://b3n.fun/img/og/default.jpg',
   children,
 }) => {
-  const title = pageTitle ? `${pageTitle} | ${name}` : name
+  const title = pageTitle ? `${pageTitle} // ${name}` : name
 
   return (
     <Head>

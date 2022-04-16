@@ -11,6 +11,7 @@ import { selectRandom } from 'util/array'
 import spotifyImage from '../assets/spotify.png'
 import { SliderControl } from './SliderControl'
 import { useRouter } from 'next/router'
+import Meta from 'components/Meta'
 
 const spotifyClientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID
 const isProd = process.env.NODE_ENV === 'production'
@@ -308,6 +309,7 @@ export default function SpotifyRecs() {
 
   return (
     <BasicLayout title="Music Recommendations">
+      <Meta title='Spotify Recommendations' />
       <div className="w-full py-16">
         {!processing && !results && (
           <>
