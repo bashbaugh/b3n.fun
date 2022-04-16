@@ -54,6 +54,12 @@ const BasicLayout: React.FC<{
             twitter
           </Link>
         </span>
+        {` • `}
+        <span>
+          <Link colored external href={'https://www.buymeacoffee.com/bnjmn'}>
+            buy me a coffee ☕️
+          </Link>
+        </span>
       </footer>
     </div>
   )
