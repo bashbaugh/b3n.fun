@@ -13,7 +13,7 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
-          <script async defer src="https://numbers.b3n.fun/latest.js"></script>
+          <script defer data-domain="b3n.fun" src="https://p.bweb.app/js/script.js"></script>
         </body>
       </Html>
     )
