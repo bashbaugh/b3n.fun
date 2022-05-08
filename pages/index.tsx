@@ -133,6 +133,11 @@ const Home: NextPage = () => {
               slug: 'rain',
             },
             {
+              name: 'Lifetime',
+              image: 'hourglass.jpeg',
+              slug: 'lifetime',
+            },
+            {
               name: 'Spotify Recommendations',
               image: 'headphones.jpeg',
               slug: 'spotify-recommendations',

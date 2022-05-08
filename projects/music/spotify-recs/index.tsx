@@ -309,7 +309,7 @@ export default function SpotifyRecs() {
 
   return (
     <BasicLayout title="Music Recommendations">
-      <Meta title='Spotify Recommendations' />
+      <Meta title="Spotify Recommendations" />
       <div className="w-full py-16">
         {!processing && !results && (
           <>

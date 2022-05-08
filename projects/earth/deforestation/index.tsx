@@ -1,10 +1,9 @@
 import clsx from 'clsx'
 import BasicLayout from 'components/BasicLayout'
+import Meta from 'components/Meta'
 import { useEffect, useState } from 'react'
 import { FaRegArrowAltCircleDown } from 'react-icons/fa'
 import { GiStopwatch } from 'react-icons/gi'
-import InView, { useInView } from 'react-intersection-observer'
-import { useSpring } from 'react-spring'
 
 // Sections:
 // Rate of deforestation
@@ -126,6 +125,7 @@ function StatsGrid() {
 export default function Deforestation() {
   return (
     <div className="w-full bg-bg-brown">
+      <Meta title="Deforestation" />
       <BasicLayout fullWidth title="Deforestation" series="Earth">
         <div className="story w-full py-16 gap-16">
           {/* <Heading>Deforestation</Heading> */}

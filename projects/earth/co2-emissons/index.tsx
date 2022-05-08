@@ -9,6 +9,7 @@ import { useInView } from 'react-intersection-observer'
 import { useSpring, animated } from 'react-spring'
 import { useEffect, useState } from 'react'
 import Fade from 'react-reveal/Fade'
+import Meta from 'components/Meta'
 
 const DotGrid = dynamic(() => import('./AnimatedDotGrid'), {
   ssr: false,
@@ -32,6 +33,7 @@ export default function HowMuchCO2() {
   return (
     <Fade duration={2000}>
       <BasicLayout title="Scale of Global CO2 Emissions" series="Earth">
+        <Meta title="CO2 Emissions" />
         <div className="story w-full py-16 gap-16">
           {/* <Heading>How Much?</Heading> */}
           {/* TODO note about ton vs tonne */}

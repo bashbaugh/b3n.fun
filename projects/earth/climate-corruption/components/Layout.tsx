@@ -96,8 +96,12 @@ const Layout = ({
 
         <footer className={clsx('w-full p-2 text-white text-center', navClass)}>
           <p>
-            🌎 Made by <a href='https://benjaminashbaugh.me/'>Benjamin</a> Ashbaugh &bull;{' '}
-            <Link href="/#earth" className='underline'>More climate-related projects </Link> 🌍
+            🌎 Made by <a href="https://benjaminashbaugh.me/">Benjamin</a>{' '}
+            Ashbaugh &bull;{' '}
+            <Link href="/#earth" className="underline">
+              More climate-related projects{' '}
+            </Link>{' '}
+            🌍
           </p>
         </footer>
       </div>
